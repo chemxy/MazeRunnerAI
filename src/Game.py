@@ -7,9 +7,11 @@
 import pygame
 import random
 import time
+from Object import Object
+from Player import Player
+from Enemy import Enemy
 
-# some global variables
-
+# setting up some global variables...
 
 # set up game clock
 clock = pygame.time.Clock()
@@ -25,16 +27,15 @@ win = pygame.display.set_mode((map_size, map_size))
 MAX_BLOCKS = int(map_size/50)
 print("max blocks: "+ str(MAX_BLOCKS) + "x" + str(MAX_BLOCKS))
 
-playerIdle = [pygame.image.load('PlayerIdle1.png'), pygame.image.load('PlayerIdle2.png'), pygame.image.load('PlayerIdle3.png'), pygame.image.load('PlayerIdle4.png'), pygame.image.load('PlayerIdle5.png'), pygame.image.load('PlayerIdle6.png')]
-enemy1 = [pygame.image.load('Enemy1_1.png'), pygame.image.load('Enemy1_2.png'), pygame.image.load('Enemy1_3.png')]
-enemy2 = [pygame.image.load('Enemy2_1.png'), pygame.image.load('Enemy2_2.png'), pygame.image.load('Enemy2_3.png')]
-innerWall = pygame.image.load('InnerWall1.png')
-outterWall1 = pygame.image.load('OutterWall1.png')
-outterWall2 = pygame.image.load('OutterWall2.png')
-food = pygame.image.load('Food.png')
-exit = pygame.image.load('Exit.png')
-background = pygame.image.load('Background.png')
-
+playerIdle = [pygame.image.load('../images/PlayerIdle1.png'), pygame.image.load('../images/PlayerIdle2.png'), pygame.image.load('../images/PlayerIdle3.png'), pygame.image.load('../images/PlayerIdle4.png'), pygame.image.load('../images/PlayerIdle5.png'), pygame.image.load('../images/PlayerIdle6.png')]
+enemy1 = [pygame.image.load('../images/Enemy1_1.png'), pygame.image.load('../images/Enemy1_2.png'), pygame.image.load('../images/Enemy1_3.png')]
+enemy2 = [pygame.image.load('../images/Enemy2_1.png'), pygame.image.load('../images/Enemy2_2.png'), pygame.image.load('../images/Enemy2_3.png')]
+innerWall = pygame.image.load('../images/InnerWall1.png')
+outterWall1 = pygame.image.load('../images/OutterWall1.png')
+outterWall2 = pygame.image.load('../images/OutterWall2.png')
+food = pygame.image.load('../images/Food.png')
+exit = pygame.image.load('../images/Exit.png')
+background = pygame.image.load('../images/Background.png')
 
 BLACK = pygame.Color(0, 0, 0)
 
@@ -42,69 +43,12 @@ types = {"innerWall":1, "outterWall":2, "exit":3, "food":4, "enemy":5, "player":
 
 mov_value = 50
 
+# end setting-up
 
 def randomBlockGenerator():
     # the number of total blocks (each block is 50x50 pixels)
     return random.randint(1,MAX_BLOCKS-2) * 50
 
-class Object:
-    def __init__(self, x, y, type): #objType = "innerWall", "outterWall", "exit", "food"
-        self.x = x
-        self.y = y
-        self.location = (self.x, self.y)
-        if(type in types.keys()):
-            self.type = type
-
-    def isEqual(self, another):
-        if int(self.x) == int(another.x) and int(self.y) == int(another.y) and str(self.type) == str(another.type):
-            return True
-        else:
-            return False
-    def isSameLocation(self, another):
-        if int(self.x) == int(another.x) and int(self.y) == int(another.y):
-            return True
-        else:
-            return False
-
-    def getType(self):
-        return self.type
-
-    def getLocation(self):
-        return self.location
-
-    def changeTypeTo(self, newType):
-        self.type = newType
-
-    def toString(self):
-        s = str(self.type) + " : " +str(self.location)
-        print(s)
-
-class Player(): 
-    def __init__(self,x ,y):
-        # character's width and height in pixels
-        #self.player_size = 50
-        # iniitial character x-y coordinates in pixels
-        self.x = x
-        self.y = y
-        #print("player initial location: " + str(self.x) + " " +str(self.y))
-        self.location = (self.x, self.y)
-        # character's idle animation count
-        self.idleCount = 0
-        self.life = 100
-
-class Enemy():
-    def __init__(self, x, y, enemyType): #enemytype = "A" or "B"
-        # character's width and height in pixels
-        #self.player_size = 50
-        # iniitial character x-y coordinates in pixels
-        self.x = x
-        self.y = y
-        self.location = (self.x, self.y)
-        # character's idle animation count
-        self.idleCount = 0
-        self.life = 100
-        self.type = enemyType
-    
 
 class Game:
     def __init__(self):
@@ -310,24 +254,4 @@ class Game:
             #update game frames
             self.updateFrame()
             time.sleep(0.1)
-        
-
-def main():
-    # initializing pygame
-    pygame.init()
     
-    # create a game instance
-    theGame = Game()
-    print("game begin!")
-    
-    # run game 
-    theGame.run()
-    print("game end.")
-    print("steps: " + str(theGame.stepsCount))
-    
-    #stop pygame 
-    pygame.quit()
-
-# main
-if __name__ == "__main__":
-    main()
