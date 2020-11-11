@@ -1,5 +1,6 @@
+from Object import Object
 
-class Enemy():
+class Enemy(Object):
     def __init__(self, x, y, enemyType): #enemytype = "A" or "B"
         # character's width and height in pixels
         #self.player_size = 50

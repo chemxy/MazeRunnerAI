@@ -31,15 +31,15 @@ playerIdle = [pygame.image.load('../images/PlayerIdle1.png'), pygame.image.load(
 enemy1 = [pygame.image.load('../images/Enemy1_1.png'), pygame.image.load('../images/Enemy1_2.png'), pygame.image.load('../images/Enemy1_3.png')]
 enemy2 = [pygame.image.load('../images/Enemy2_1.png'), pygame.image.load('../images/Enemy2_2.png'), pygame.image.load('../images/Enemy2_3.png')]
 innerWall = pygame.image.load('../images/InnerWall1.png')
-outterWall1 = pygame.image.load('../images/OutterWall1.png')
-outterWall2 = pygame.image.load('../images/OutterWall2.png')
+outerwall1 = pygame.image.load('../images/Outerwall1.png')
+outerwall2 = pygame.image.load('../images/Outerwall2.png')
 food = pygame.image.load('../images/Food.png')
 exit = pygame.image.load('../images/Exit.png')
 background = pygame.image.load('../images/Background.png')
 
 BLACK = pygame.Color(0, 0, 0)
 
-types = {"innerWall":1, "outterWall":2, "exit":3, "food":4, "enemy":5, "player": 6 }
+types = {"innerWall":1, "outerwall":2, "exit":3, "food":4, "enemy":5, "player": 6 }
 
 mov_value = 50
 
@@ -59,7 +59,7 @@ class Game:
         self.level = 1
 
         # load environment
-        self.walls = [] #only contains outterwall1
+        self.walls = [] #only contains outerwall1
         self.foods = []
         self.exit = self.wallGenerator()
         #print(self.exit)
@@ -68,7 +68,7 @@ class Game:
       
         # generate enemies
         self.enemies = [] 
-        for i in range(random.randint(0, self.difficulty)):
+        for i in range(random.randint(1, self.difficulty)):
             self.enemyGenerator()
  
         # load character
@@ -76,87 +76,24 @@ class Game:
         print("player initial location: " + str(self.player.x) + " " + str(self.player.y))
 
 
-    def isOutterWall(self, x, y):
+    def isOuterwall(self, x, y):
         #print(str(x) + " " + str(y))
-        temp = Object(x,y,"outterWall")
+        temp = Object(x,y,"outerwall")
         if self.isSameLocation(temp, self.walls):
             return True   
-        #print("not outterwall")
+        #print("not outerwall")
         return False
 
     """ this checks if this nodeA's location is the same as any node's location in listA """
-    def isSameLocation(self,nodeA,listA): 
+    def isSameLocation(self,objcA,listA): 
         #print("nodeA: " + str(nodeA))
         for item in listA:
-            if nodeA.isSameLocation(item):
+            if objcA.isSameLocation(item):
                 #print(" already in list")
                 return True
         #print(" not in list")
         return False
         
-    """" this generates the walls as well as the exit """
-    def wallGenerator(self):
-        for i in range(0, MAX_BLOCKS):
-            for j in range(0, MAX_BLOCKS):
-                if (i == 0) or (j == 0) or (i == MAX_BLOCKS-1) or (j == MAX_BLOCKS-1):
-                    temp = Object(i*50,j*50, "outterWall")
-                    #temp.toString()
-                    self.walls.append(temp)
-            
-        #print(self.walls)            
-
-        wallCount = random.randint(25,45)
-        print("wallcount: " + str(wallCount))
-        for i in range(wallCount):
-            temp = Object(randomBlockGenerator(), randomBlockGenerator(), "outterWall")
-            while self.isSameLocation(temp, self.walls):
-                temp = Object(randomBlockGenerator(), randomBlockGenerator(), "outterWall")
-            self.walls.append(temp)
-        #print(self.walls)        
-
-        tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "exit")
-        while self.isSameLocation(tempExit, self.walls):
-            tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "outterWall")
-        return tempExit.getLocation()
-
-
-    def foodGenerator(self):
-        foodCount = random.randint(1,3) 
-        print("foodcount: " + str(foodCount))
-        for i in range(foodCount):
-            temp = Object(randomBlockGenerator(), randomBlockGenerator(), "food")
-            #print("food temp: " + str(temp))
-            #temp.toString()
-            while self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods):
-                temp = Object(randomBlockGenerator(), randomBlockGenerator(), "food")
-                #print("food already in list")
-            #print("food not in foods")
-            self.foods.append(temp)
-
-    def playerGenerator(self):
-        x =  randomBlockGenerator()
-        y =  randomBlockGenerator()
-        while(x < 50 and x >= map_size-50 and y < 50 and y >= map_size-50):
-            x = randomBlockGenerator()
-            y = randomBlockGenerator()
-        return Player(x,y)
-
-    def enemyGenerator(self):
-        x =  randomBlockGenerator()
-        y =  randomBlockGenerator()
-        while(x < 50 and x >= map_size-50 and y < 50 and y >= map_size-50):
-            x = randomBlockGenerator()
-            y = randomBlockGenerator()
-
-        result = random.randint(1,100) #1-100
-        if(result > 33):
-            temp = Enemy(x,y,"A")
-            self.enemies.append(temp)
-
-        else:
-            temp = Enemy(x,y,"B")
-            self.enemies.append(temp)
-      
     def isFood(self, x, y):
         temp = Object(x, y, "food")
         #print(str(item.x) + " " + str(item.y))
@@ -173,6 +110,90 @@ class Game:
             return True
         return False
 
+    def isEnemy(self, x, y):
+        for enemy in self.enemies:
+            if enemy.x == x and enemy.y == y:
+                return True
+        return False
+
+    def isOutOfBound(self,x ,y):
+        if(x < 50 or x >= map_size-50 or y < 50 or y >= map_size-50):
+            return True
+        else:
+            return False
+
+    """" this generates the walls as well as the exit """
+    def wallGenerator(self):
+        for i in range(0, MAX_BLOCKS):
+            for j in range(0, MAX_BLOCKS):
+                if (i == 0) or (j == 0) or (i == MAX_BLOCKS-1) or (j == MAX_BLOCKS-1):
+                    temp = Object(i*50,j*50, "outerwall")
+                    #temp.toString()
+                    self.walls.append(temp)
+            
+        #print(self.walls)            
+
+        wallCount = random.randint(25,45)
+        print("wallcount: " + str(wallCount))
+        for i in range(wallCount):
+            temp = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
+            while self.isSameLocation(temp, self.walls):
+                temp = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
+            self.walls.append(temp)
+        #print(self.walls)        
+
+        tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "exit")
+        while self.isSameLocation(tempExit, self.walls):
+            tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
+        return tempExit.getLocation()
+
+
+    def foodGenerator(self):
+        foodCount = random.randint(1,3) 
+        print("foodcount: " + str(foodCount))
+        for i in range(foodCount):
+            x =  randomBlockGenerator()
+            y =  randomBlockGenerator()
+            temp = Object(x, y, "food")
+            #print("food temp: " + str(temp))
+            #temp.toString()
+            while(self.isOutOfBound(x,y) or self.isOuterwall(x,y) or self.isExit(x,y) or self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods) ):
+                x = randomBlockGenerator()
+                y = randomBlockGenerator()         
+                temp = Object(x,y,"food")
+                #print("food already in list")
+                #print("food not in foods")
+            self.foods.append(temp)
+
+    def playerGenerator(self):
+        x =  randomBlockGenerator()
+        y =  randomBlockGenerator()
+        temp = Object(x,y,"player")
+        while(self.isOutOfBound(x,y) or self.isOuterwall(x,y) or self.isExit(x,y) or self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods) ):     
+            x = randomBlockGenerator()
+            y = randomBlockGenerator()         
+            temp = Object(x,y,"player")
+
+        return Player(x,y)
+
+    def enemyGenerator(self):
+        x =  randomBlockGenerator()
+        y =  randomBlockGenerator()
+        temp = Object(x,y,"enemy")
+        while(self.isOutOfBound(x,y) or self.isOuterwall(x,y) or self.isExit(x,y) or self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods) ):            
+            x = randomBlockGenerator()
+            y = randomBlockGenerator()         
+            temp = Object(x,y,"enemy")
+
+        result = random.randint(1,100) #1-100
+        if(result > 33):
+            temp = Enemy(x,y,"A")
+            self.enemies.append(temp)
+
+        else:
+            temp = Enemy(x,y,"B")
+            self.enemies.append(temp)
+
     def updateFrame(self):
         #win.fill(BLACK)
         win.blit(background, (0,0))
@@ -180,7 +201,7 @@ class Game:
         
         for item in self.walls:
             #print(item)
-            win.blit(outterWall1, item.location)
+            win.blit(outerwall1, item.location)
 
         for item in self.foods:
             win.blit(food, item.location)
@@ -206,7 +227,8 @@ class Game:
             self.player.idleCount = 0
         # update display
         pygame.display.update()
-   
+    
+
     def run(self):
         # main loop
         while self.isRun:
@@ -229,26 +251,29 @@ class Game:
                         self.isRun = False
                         break
                         
-                    elif (event.key == pygame.K_LEFT ) and not(self.isOutterWall(self.player.x -50, self.player.y)):    
+                    elif (event.key == pygame.K_LEFT ) and not(self.isOuterwall(self.player.x -50, self.player.y)):    
                         self.player.x -= mov_value
                         self.stepsCount += 1
-                    elif (event.key == pygame.K_RIGHT )  and not(self.isOutterWall(self.player.x+50, self.player.y)):   
+                    elif (event.key == pygame.K_RIGHT )  and not(self.isOuterwall(self.player.x+50, self.player.y)):   
                         self.player.x += mov_value
                         self.stepsCount += 1
-                    elif (event.key == pygame.K_UP ) and not(self.isOutterWall(self.player.x , self.player.y-50)):      
+                    elif (event.key == pygame.K_UP ) and not(self.isOuterwall(self.player.x , self.player.y-50)):      
                             self.player.y -= mov_value
                             self.stepsCount += 1
-                    elif (event.key == pygame.K_DOWN ) and not(self.isOutterWall(self.player.x, self.player.y+50)):   
+                    elif (event.key == pygame.K_DOWN ) and not(self.isOuterwall(self.player.x, self.player.y+50)):   
                             self.player.y += mov_value
                             self.stepsCount += 1
                     # check if there is food or exit in the location         
                     if(self.isFood(self.player.x, self.player.y)):
                         self.player.life += 10
                     if(self.isExit(self.player.x, self.player.y)):
-                        print("exit!")
+                        print("this is exit!")
                         self.isRun = False
                         break
-                    
+                    if(self.isEnemy(self.player.x, self.player.y)):        
+                        print("encounter enemy!")
+                        self.isRun = False
+                        break       
                     #after = str(self.player.x) + "," + str(self.player.y)
                     #print("player move from " + prev + " to " + after)
             #update game frames

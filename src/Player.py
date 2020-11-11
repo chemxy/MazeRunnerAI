@@ -1,5 +1,6 @@
+from Object import Object
 
-class Player(): 
+class Player(Object): 
     def __init__(self,x ,y):
         # character's width and height in pixels
         #self.player_size = 50
