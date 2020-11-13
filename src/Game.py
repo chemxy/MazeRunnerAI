@@ -7,9 +7,10 @@
 import pygame
 import random
 import time
-from Object import Object
+from Object import Object, Food, Wall
 from Player import Player
 from Enemy import Enemy
+
 
 # setting up some global variables...
 
@@ -49,7 +50,6 @@ def randomBlockGenerator():
     # the number of total blocks (each block is 50x50 pixels)
     return random.randint(1,MAX_BLOCKS-2) * 50
 
-
 class Game:
     def __init__(self):
         self.isRun = True
@@ -63,14 +63,13 @@ class Game:
         self.foods = []
         self.exit = self.wallGenerator()
         #print(self.exit)
-      
         self.foodGenerator()
       
         # generate enemies
         self.enemies = [] 
         for i in range(random.randint(1, self.difficulty)):
             self.enemyGenerator()
- 
+
         # load character
         self.player = self.playerGenerator()
         print("player initial location: " + str(self.player.x) + " " + str(self.player.y))
@@ -84,7 +83,7 @@ class Game:
         #print("not outerwall")
         return False
 
-    """ this checks if this nodeA's location is the same as any node's location in listA """
+    """ this checks if this object's location is the same as any node's location in listA """
     def isSameLocation(self,objcA,listA): 
         #print("nodeA: " + str(nodeA))
         for item in listA:
@@ -132,7 +131,7 @@ class Game:
                     self.walls.append(temp)
             
         #print(self.walls)            
-
+        
         wallCount = random.randint(25,45)
         print("wallcount: " + str(wallCount))
         for i in range(wallCount):
@@ -147,20 +146,21 @@ class Game:
             tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
         return tempExit.getLocation()
 
-
     def foodGenerator(self):
         foodCount = random.randint(1,3) 
         print("foodcount: " + str(foodCount))
         for i in range(foodCount):
             x =  randomBlockGenerator()
             y =  randomBlockGenerator()
-            temp = Object(x, y, "food")
+            #temp = Object(x, y, "food")
+            temp = Food(x,y)
             #print("food temp: " + str(temp))
             #temp.toString()
             while(self.isOutOfBound(x,y) or self.isOuterwall(x,y) or self.isExit(x,y) or self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods) ):
                 x = randomBlockGenerator()
                 y = randomBlockGenerator()         
-                temp = Object(x,y,"food")
+                #temp = Object(x,y,"food")
+                temp = Food(x,y)
                 #print("food already in list")
                 #print("food not in foods")
             self.foods.append(temp)
@@ -168,31 +168,32 @@ class Game:
     def playerGenerator(self):
         x =  randomBlockGenerator()
         y =  randomBlockGenerator()
-        temp = Object(x,y,"player")
+        #temp = Object(x,y,"player")
+        temp = Player(x,y)
         while(self.isOutOfBound(x,y) or self.isOuterwall(x,y) or self.isExit(x,y) or self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods) ):     
             x = randomBlockGenerator()
             y = randomBlockGenerator()         
-            temp = Object(x,y,"player")
-
+            #temp = Object(x,y,"player")
+            temp = Player(x,y)
         return Player(x,y)
 
     def enemyGenerator(self):
         x =  randomBlockGenerator()
         y =  randomBlockGenerator()
-        temp = Object(x,y,"enemy")
+        typeOfenemy = ""
+        result = random.randint(1,100) #1-100
+        if(result > 33):
+            typeOfenemy = "A"
+        else:
+            typeOfenemy = "B"
+        temp = Enemy(x,y,typeOfenemy)
+        #temp = Object(x,y,"enemy")
         while(self.isOutOfBound(x,y) or self.isOuterwall(x,y) or self.isExit(x,y) or self.isSameLocation(temp, self.walls) or self.isSameLocation(temp, self.foods) ):            
             x = randomBlockGenerator()
             y = randomBlockGenerator()         
-            temp = Object(x,y,"enemy")
-
-        result = random.randint(1,100) #1-100
-        if(result > 33):
-            temp = Enemy(x,y,"A")
-            self.enemies.append(temp)
-
-        else:
-            temp = Enemy(x,y,"B")
-            self.enemies.append(temp)
+            #temp = Object(x,y,"enemy")
+            temp = Enemy(x,y,typeOfenemy)
+        self.enemies.append(temp)
 
     def updateFrame(self):
         #win.fill(BLACK)
@@ -241,16 +242,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.isRun = False
                     break
-                    
                 #detect user input
                 elif event.type == pygame.KEYDOWN:
-                    
                     #prev = str(self.player.x) + "," + str(self.player.y)
-                    
                     if (event.key == pygame.K_ESCAPE):
                         self.isRun = False
                         break
-                        
                     elif (event.key == pygame.K_LEFT ) and not(self.isOuterwall(self.player.x -50, self.player.y)):    
                         self.player.x -= mov_value
                         self.stepsCount += 1

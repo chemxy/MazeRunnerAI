@@ -34,17 +34,15 @@ class Object:
 
 
 class Wall(Object):
-    def __init__(self, x, y, type): #objType = "innerWall", "outterWall", "exit", "food"
+    def __init__(self, x, y): #objType = "innerWall", "outterWall", "exit", "food"
         self.x = x
         self.y = y
         self.location = (self.x, self.y)
-        if(type in types.keys()):
-            self.type = "outerWall"
+        self.type = "outerWall"
 
 class Food(Object):
-    def __init__(self, x, y, type): #objType = "innerWall", "outterWall", "exit", "food"
+    def __init__(self, x, y): #objType = "innerWall", "outterWall", "exit", "food"
         self.x = x
         self.y = y
         self.location = (self.x, self.y)
-        if(type in types.keys()):
-            self.type = "food"
+        self.type = "food"
