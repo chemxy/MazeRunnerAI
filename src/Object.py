@@ -1,7 +1,7 @@
-types = {"innerWall":1, "outerWall":2, "exit":3, "food":4, "enemy":5, "player": 6 }
+types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Object:
-    def __init__(self, x, y, type): #objType = "innerWall", "outerWall", "exit", "food", "player", "enemy"
+    def __init__(self, x, y, type): #objType = "innerWall", "wall", "exit", "food", "player", "enemy"
         self.x = x
         self.y = y
         self.location = (self.x, self.y)
@@ -38,7 +38,7 @@ class Wall(Object):
         self.x = x
         self.y = y
         self.location = (self.x, self.y)
-        self.type = "outerWall"
+        self.type = "wall"
 
 class Food(Object):
     def __init__(self, x, y): #objType = "innerWall", "outterWall", "exit", "food"

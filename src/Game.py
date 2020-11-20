@@ -31,16 +31,14 @@ print("max blocks: "+ str(MAX_BLOCKS) + "x" + str(MAX_BLOCKS))
 playerIdle = [pygame.image.load('../images/PlayerIdle1.png'), pygame.image.load('../images/PlayerIdle2.png'), pygame.image.load('../images/PlayerIdle3.png'), pygame.image.load('../images/PlayerIdle4.png'), pygame.image.load('../images/PlayerIdle5.png'), pygame.image.load('../images/PlayerIdle6.png')]
 enemy1 = [pygame.image.load('../images/Enemy1_1.png'), pygame.image.load('../images/Enemy1_2.png'), pygame.image.load('../images/Enemy1_3.png')]
 enemy2 = [pygame.image.load('../images/Enemy2_1.png'), pygame.image.load('../images/Enemy2_2.png'), pygame.image.load('../images/Enemy2_3.png')]
-innerWall = pygame.image.load('../images/InnerWall1.png')
-outerwall1 = pygame.image.load('../images/Outerwall1.png')
-outerwall2 = pygame.image.load('../images/Outerwall2.png')
+wall = pygame.image.load('../images/Outerwall1.png')
 food = pygame.image.load('../images/Food.png')
 exit = pygame.image.load('../images/Exit.png')
 background = pygame.image.load('../images/Background.png')
 
 BLACK = pygame.Color(0, 0, 0)
 
-types = {"innerWall":1, "outerwall":2, "exit":3, "food":4, "enemy":5, "player": 6 }
+types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 mov_value = 50
 
@@ -59,7 +57,7 @@ class Game:
         self.level = 1
 
         # load environment
-        self.walls = [] #only contains outerwall1
+        self.walls = [] #only contains wall
         self.foods = []
         self.exit = self.wallGenerator()
         #print(self.exit)
@@ -77,10 +75,10 @@ class Game:
 
     def isOuterwall(self, x, y):
         #print(str(x) + " " + str(y))
-        temp = Object(x,y,"outerwall")
+        temp = Object(x,y,"wall")
         if self.isSameLocation(temp, self.walls):
             return True   
-        #print("not outerwall")
+        #print("not wall")
         return False
 
     """ this checks if this object's location is the same as any node's location in listA """
@@ -126,7 +124,7 @@ class Game:
         for i in range(0, MAX_BLOCKS):
             for j in range(0, MAX_BLOCKS):
                 if (i == 0) or (j == 0) or (i == MAX_BLOCKS-1) or (j == MAX_BLOCKS-1):
-                    temp = Object(i*50,j*50, "outerwall")
+                    temp = Object(i*50,j*50, "wall")
                     #temp.toString()
                     self.walls.append(temp)
             
@@ -135,20 +133,20 @@ class Game:
         wallCount = random.randint(25,45)
         print("wallcount: " + str(wallCount))
         for i in range(wallCount):
-            temp = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
+            temp = Object(randomBlockGenerator(), randomBlockGenerator(), "wall")
             while self.isSameLocation(temp, self.walls):
-                temp = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
+                temp = Object(randomBlockGenerator(), randomBlockGenerator(), "wall")
             self.walls.append(temp)
         #print(self.walls)        
 
         tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "exit")
         while self.isSameLocation(tempExit, self.walls):
-            tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "outerwall")
+            tempExit = Object(randomBlockGenerator(), randomBlockGenerator(), "wall")
         return tempExit.getLocation()
 
     def foodGenerator(self):
         foodCount = random.randint(1,3) 
-        print("foodcount: " + str(foodCount))
+        #print("foodcount: " + str(foodCount))
         for i in range(foodCount):
             x =  randomBlockGenerator()
             y =  randomBlockGenerator()
@@ -202,7 +200,7 @@ class Game:
         
         for item in self.walls:
             #print(item)
-            win.blit(outerwall1, item.location)
+            win.blit(wall, item.location)
 
         for item in self.foods:
             win.blit(food, item.location)
