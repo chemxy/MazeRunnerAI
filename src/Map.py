@@ -1,4 +1,7 @@
+import pygame
+
 from Block import Block
+from Object import Object, Food, Wall
 
 class Map:
     def __init__(self, map_dict=None):
@@ -22,21 +25,21 @@ class Map:
                     edges.append({vertex, neighbour})
         return edges
 
-    def add_vertex(self, block):
+    def add_vertex(self, newBlock):
         """ If the vertex "vertex" is not in 
             self.map_dict, a key "vertex" with an empty
             list as a value is added to the dictionary. 
             Otherwise nothing has to be done. 
         """
-        if block not in self.map_dict:
-            self.map_dict[block] = []
+        if newBlock not in self.map_dict:
+            self.map_dict[newBlock] = []
 
-    def add_edge(self, edge):
+    def add_edge(self, newEdge):
         """ assumes that edge is of type set, tuple or list; 
             between two vertices can be multiple edges! 
         """
-        edge = set(edge)
-        (vertex1, vertex2) = tuple(edge)
+        newEdge = set(newEdge)
+        (vertex1, vertex2) = tuple(newEdge)
         if vertex1 in self.map_dict:
             self.map_dict[vertex1].append(vertex2)
         else:
@@ -50,20 +53,3 @@ class Map:
         for edge in self.generate_edges():
             res += str(edge) + " "
         return res
-
-# some test cases
-def main():
-    A = Block(contents=["wall"])
-    B = Block(contents=["wall"])
-    C = Block()
-    D = Block()
-    E = Block()
-    map_dict = {
-                A:[B], 
-                C:[D, E]
-            }
-    GameMap = Map(map_dict)
-    print(GameMap)
-# main
-if __name__ == "__main__":
-    main()

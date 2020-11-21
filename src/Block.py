@@ -1,16 +1,21 @@
-from Object import Object,Wall,Food
+from Object import Object, Wall, Food
 
 types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Block:
-    def __init__(self, up=None, down=None, left=None, right=None, contents=None):
-        self.up = up
+    def __init__(self, isWall=None, up=None, down=None, left=None, right=None, contents=None):
+        self.up = up # up - link to another Block object
         self.down = down
         self.left = left
         self.right = right
-        if contents == None:
-            contents = []
-        self.contents = contents #this list only contains unique items. i.e. each item has a unique type.
+        if isWall != None: #iswall - a Wall object
+            self.isWall = True
+            self.wall = isWall 
+        else:
+            self.isWall = False
+            if contents == None:
+                contents = []
+                self.contents = contents #this list only contains unique items. i.e. each item has a unique type.
 
     def getContents(self):
         return list(self.contents)

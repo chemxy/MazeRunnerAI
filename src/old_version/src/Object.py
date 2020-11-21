@@ -1,11 +1,10 @@
 types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Object:
-    def __init__(self, x, y, type): #objType = "wall", "exit", "food", "player", "enemy"
+    def __init__(self, x, y, type): #objType = "innerWall", "wall", "exit", "food", "player", "enemy"
         self.x = x
         self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
+        self.location = (self.x, self.y)
         if(type in types.keys()):
             self.type = type
 
@@ -35,26 +34,16 @@ class Object:
 
 
 class Wall(Object):
-    def __init__(self, x, y):
+    def __init__(self, x, y): #objType = "innerWall", "outterWall", "exit", "food"
         self.x = x
         self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
+        self.location = (self.x, self.y)
         self.type = "wall"
         
 
 class Food(Object):
-    def __init__(self, x, y): 
+    def __init__(self, x, y): #objType = "innerWall", "outterWall", "exit", "food"
         self.x = x
         self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
+        self.location = (self.x, self.y)
         self.type = "food"
-
-class ExitPoint(Object):
-    def __init__(self, x, y): 
-        self.x = x
-        self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
-        self.type = "exit"
