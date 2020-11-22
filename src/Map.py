@@ -1,5 +1,3 @@
-import pygame
-
 from Block import Block
 from Object import Object, Food, Wall
 

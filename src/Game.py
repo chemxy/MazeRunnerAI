@@ -7,7 +7,8 @@
 import pygame
 import random
 import time
-from Object import Object, Food, Wall, ExitPoint
+import math
+#from Object import Object, Food, Wall, ExitPoint
 from Player import Player
 from Enemy import Enemy
 from Map import Map
@@ -44,13 +45,12 @@ BLACK = pygame.Color(0, 0, 0)
 
 def randomBlockGenerator():
     # the number of total blocks (each block is 50x50 pixels)
-    x = random.randint(0,MAX_BLOCKS-1) 
+    x = random.randint(1,MAX_BLOCKS-2)
     #print(x)
     return x
 
 class Game:
     def __init__(self):
-        self.isRun = True
         # set difficulty
         self.difficulty = 1
         self.stepsCount = 0
@@ -59,20 +59,15 @@ class Game:
         # load environment
         self.wallList = self.wallGenerator() #only contains walls
         print("wall list: " + str(self.wallList))
+
         self.exitPt = self.exitGenerator() # exit point location
         print("exit point: " + str(self.exitPt))
         
-        self.foodList = []
-        foodCount = random.randint(1,3) 
-        print("foodcount: " + str(foodCount))
-        for i in range(foodCount):
-            self.foodGenerator()
+        self.foodList = self.foodGenerator()
         print("food list: " + str(self.foodList))
         
         # generate enemies
-        self.enemyList = [] 
-        for i in range(random.randint(1, self.difficulty)):
-            self.enemyGenerator()
+        self.enemyList = self.enemyGenerator()
 
         # load character
         self.player = self.playerGenerator()
@@ -105,7 +100,7 @@ class Game:
                 if (i == 0) or (j == 0) or (i == MAX_BLOCKS-1) or (j == MAX_BLOCKS-1):
                     wallList.append((i,j))
         
-        wallCount = random.randint(5,25)
+        wallCount = random.randint(5,20)
         print("wallcount: " + str(wallCount))
         for i in range(wallCount):
             x = randomBlockGenerator() 
@@ -125,30 +120,34 @@ class Game:
         return (x,y)
 
     def foodGenerator(self):
-        x =  randomBlockGenerator()
-        y =  randomBlockGenerator()
-        while ((x,y) in self.wallList) or ((x,y) == self.exitPt):
-            x = randomBlockGenerator()
-            y = randomBlockGenerator()         
-
-        return self.foodList.append((x,y))
+        foodList = []
+        foodCount = random.randint(0,3) 
+        print("foodcount: " + str(foodCount))
+        for i in range(foodCount):
+            x =  randomBlockGenerator()
+            y =  randomBlockGenerator()
+            while ((x,y) in self.wallList) or ((x,y) == self.exitPt) or ((x,y) in foodList):
+                x = randomBlockGenerator()
+                y = randomBlockGenerator()         
+            foodList.append((x,y))
+        return foodList
 
     def enemyGenerator(self):
-        x =  randomBlockGenerator()
-        y =  randomBlockGenerator()
+        enemyList = []
+        for i in range(random.randint(0, self.difficulty+1)):
+            x =  randomBlockGenerator()
+            y =  randomBlockGenerator()
         #typeOfenemy = ""
         #result = random.randint(1,100) #1-100
         #if(result > 33):
         #    typeOfenemy = "A"
         #else:
         #    typeOfenemy = "B"
-        #temp = Enemy(x,y,typeOfenemy)
-        #temp = Object(x,y,"enemy")
-        while ((x,y) in self.wallList) or ((x,y) == self.exitPt) or ((x,y) in self.foodList):
-            x = randomBlockGenerator()
-            y = randomBlockGenerator()         
-           
-        self.enemyList.append((x,y))
+            while ((x,y) in self.wallList) or ((x,y) == self.exitPt) or ((x,y) in self.foodList or (x,y) in enemyList):
+                x = randomBlockGenerator()
+                y = randomBlockGenerator()         
+            enemyList.append((x,y))
+        return enemyList
 
     def playerGenerator(self):
         x =  randomBlockGenerator()
@@ -159,6 +158,10 @@ class Game:
         
         return Player(x,y)
 
+    def updateSteps(self, val):
+        self.stepsCount += val
+        if self.stepsCount < 0:
+            self.stepsCount = 0
 
     def updateFrame(self):
         #win.fill(BLACK)
@@ -198,7 +201,8 @@ class Game:
     
     def run(self):
         # main loop
-        while self.isRun:
+        isRun = True
+        while isRun:
             #time.sleep(0.05)
             # set game frame rate
             clock.tick(9) # the bigger the number, the faster the frame refreshes
@@ -206,13 +210,13 @@ class Game:
             for event in pygame.event.get():
                 #print(event)
                 if event.type == pygame.QUIT:
-                    self.isRun = False
+                    isRun = False
                     break
                 #detect user input
                 elif event.type == pygame.KEYDOWN:
                     #prev = str(self.player.x) + "," + str(self.player.y)
                     if (event.key == pygame.K_ESCAPE):
-                        self.isRun = False
+                        isRun = False
                         break
                     elif (event.key == pygame.K_LEFT ) and ((self.player.x - 1,self.player.y) not in self.wallList): #not(self.isOuterwall(self.player.x -50, self.player.y)):    
                         self.player.move("LEFT")
@@ -222,20 +226,22 @@ class Game:
                         self.player.move("UP")
                     elif (event.key == pygame.K_DOWN ) and ((self.player.x,self.player.y+1) not in self.wallList): #not(self.isOuterwall(self.player.x, self.player.y+50)):   
                         self.player.move("DOWN")
-                    self.stepsCount += 1
+                    self.updateSteps(1)
                     # check if there is food or exit in the location         
                     if(self.isFood(self.player.x, self.player.y)):
                         #self.player.life += 10
                         print("food + 1")
-                        self.stepsCount -= 10
+                        self.updateSteps(-10)
                         self.foodList.remove((self.player.x, self.player.y))
                     if(self.isExit(self.player.x, self.player.y)):
                         print("this is exit!")
                         self.isRun = False
                         break
-                    if(self.isEnemy(self.player.x, self.player.y)):        
+
+                    """ when encountered an enemy: steps + 50 or end of game ? """
+                    if(self.isEnemy(self.player.x, self.player.y)):  
                         print("encounter enemy!")
-                        self.isRun = False
+                        isRun = False
                         break       
                     #after = str(self.player.x) + "," + str(self.player.y)
                     #print("player move from " + prev + " to " + after)
