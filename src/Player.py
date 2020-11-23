@@ -11,7 +11,7 @@ class Player(Object):
         self.index = (x,y)
         self.location = (x*50, y*50)
         # character's idle animation count
-        self.idleCount = 0
+        self.animationCount = 0
         #self.life = 100
 
     def setX(self, x):
