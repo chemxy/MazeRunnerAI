@@ -23,7 +23,7 @@ class Map:
                     edges.append({vertex, neighbour})
         return edges
 
-    def add_vertex(self, newBlock):
+    def addVertex(self, newBlock):
         """ If the vertex "vertex" is not in 
             self.map_dict, a key "vertex" with an empty
             list as a value is added to the dictionary. 
@@ -32,7 +32,7 @@ class Map:
         if newBlock not in self.map_dict:
             self.map_dict[newBlock] = []
 
-    def add_edge(self, newEdge):
+    def addEdge(self, newEdge):
         """ assumes that edge is of type set, tuple or list; 
             between two vertices can be multiple edges! 
         """

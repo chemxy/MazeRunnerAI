@@ -7,7 +7,7 @@
 import pygame
 import random
 import time
-import math
+from math import floor,log10, log
 from Object import Object, Food, Wall, ExitPoint
 from Player import Player
 from Enemy import Enemy
@@ -142,7 +142,7 @@ class Game:
     def enemyGenerator(self):
         #enemyList = []
         enemyDict = {}
-        for i in range(random.randint(0, self.difficulty+1)):
+        for i in range(floor(log(self.difficulty))):
             x =  randomBlockGenerator()
             y =  randomBlockGenerator()
         #typeOfenemy = ""
