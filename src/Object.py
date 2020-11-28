@@ -1,36 +1,42 @@
 types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Object:
-    def __init__(self, x, y, type): #objType = "wall", "exit", "food", "player", "enemy"
+    def __init__(self, x, y, type): #type = "wall", "exit", "food", "player", "enemy"
         self.x = x
         self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
+        self.index = tuple(self.x, self.y)
+        self.location = tuple(x * 50, y * 50)
         if(type in types.keys()):
             self.type = type
+        else:
+            print("ERROR: the input type is not valid!")
 
     def isEqual(self, another):
-        if int(self.x) == int(another.x) and int(self.y) == int(another.y) and str(self.type) == str(another.type):
+        if self.index == another.index and str(self.type) == str(another.type):
             return True
         else:
             return False
+
     def isSameLocation(self, another):
-        if int(self.x) == int(another.x) and int(self.y) == int(another.y):
+        if self.index == another.index:
             return True
         else:
             return False
 
     def getType(self):
-        return self.type
+        return str(self.type)
+
+    def getIndex(self):
+            return tuple(self.index)
 
     def getLocation(self):
-        return self.location
+        return tuple(self.location)
 
     def changeTypeTo(self, newType):
         self.type = newType
 
     def toString(self):
-        s = str(self.type) + " : " +str(self.location)
+        s = str(self.type) + " : " +str(self.index)
         print(s)
 
 

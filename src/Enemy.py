@@ -1,5 +1,7 @@
 from Object import Object
 
+types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
+
 class Enemy(Object):
     def __init__(self, x, y): #enemytype = "A" or "B"
         # character's width and height in pixels
@@ -13,4 +15,5 @@ class Enemy(Object):
         self.animationCount = 0
         #self.life = 100
         #self.type = enemyType
+        self.type = "enemy"
     

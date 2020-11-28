@@ -1,4 +1,4 @@
-from Block import Block
+from Node import Node
 from Object import Object, Food, Wall
 
 class Map:
@@ -23,14 +23,14 @@ class Map:
                     edges.append({vertex, neighbour})
         return edges
 
-    def addVertex(self, newBlock):
+    def addVertex(self, newNode):
         """ If the vertex "vertex" is not in 
             self.map_dict, a key "vertex" with an empty
             list as a value is added to the dictionary. 
             Otherwise nothing has to be done. 
         """
-        if newBlock not in self.map_dict:
-            self.map_dict[newBlock] = []
+        if newNode not in self.map_dict:
+            self.map_dict[newNode] = []
 
     def addEdge(self, newEdge):
         """ assumes that edge is of type set, tuple or list; 
@@ -51,3 +51,14 @@ class Map:
         for edge in self.generate_edges():
             res += str(edge) + " "
         return res
+
+    def findPath(self, curNode, endNode):
+        return None
+
+"""
+graph and find path
+https://www.python-course.eu/graphs_python.php
+https://www.python-course.eu/networkx.php
+https://www.python.org/doc/essays/graphs/
+
+"""

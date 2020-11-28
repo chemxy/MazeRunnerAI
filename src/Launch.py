@@ -2,7 +2,7 @@ from Game import Game
 import pygame
 import time
 from Map import Map
-from Block import Block
+from Node import Node
 from Object import Wall, Object, Food
 
 def main1():
@@ -16,7 +16,7 @@ def main1():
     # run game 
     theGame.run()
     print("game end.")
-    print("game difficulty: " + str(theGame.difficulty))
+    print("game level: " + str(theGame.level))
     print("steps: " + str(theGame.stepsCount))
     
     #stop pygame 
@@ -36,10 +36,10 @@ def main2():
     BLACK = pygame.Color(0, 0, 0)
 
             
-    b1 = Block(0,0,wallLocation=Wall(0,0))
-    b2 = Block(0,1)
-    b3 = Block(1,0,wallLocation=Wall(1,0))
-    b4 = Block(1,1,wallLocation=Wall(1,1))
+    b1 = Node(0,0,wallLocation=Wall(0,0))
+    b2 = Node(0,1)
+    b3 = Node(1,0,wallLocation=Wall(1,0))
+    b4 = Node(1,1,wallLocation=Wall(1,1))
     themap = {b1:[b2,b3],
                 b2:[b1,b4],
                 b3:[b1,b4],
@@ -51,13 +51,13 @@ def main2():
    
     
     print("adding vertex b5")
-    b5 = Block(2,2, wallLocation=(2,2))
+    b5 = Node(2,2, wallLocation=(2,2))
     gameMap.addVertex(b5)
     print("adding vertex b6")
-    b6 = Block(0,2, wallLocation=(0,2))
+    b6 = Node(0,2, wallLocation=(0,2))
     gameMap.addVertex(b6)
     print("adding vertex b7")
-    b7 = Block(1,2)
+    b7 = Node(1,2)
     gameMap.addVertex(b7)
     print("vertices added")
     print("map: ") 

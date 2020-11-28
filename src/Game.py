@@ -12,7 +12,7 @@ from Object import Object, Food, Wall, ExitPoint
 from Player import Player
 from Enemy import Enemy
 from Map import Map
-from Block import Block
+from Node import Node
 
 
 # setting up some global variables...
@@ -51,11 +51,10 @@ def randomBlockGenerator():
 
 class Game:
     def __init__(self):
-        # set difficulty
-        self.difficulty = 1
+        # set level
+        self.level = 10
         self.stepsCount = 0
-        self.level = 1
-
+        
         # load environment
         self.wallList = self.wallGenerator() #only contains walls
         print("wall list: " + str(self.wallList))
@@ -75,25 +74,23 @@ class Game:
         # load character
         self.player = self.playerGenerator()
         print("player initial location: " + str(self.player.index))
-
-
         
-    def isFood(self, x, y):
+    def isFood(self, curLocation):
         for key in self.foodDict.keys():
             #print(key)
-            if self.foodDict[key] == (x,y):
+            if self.foodDict[key] == curLocation:
                 self.foodDict.pop(key)
                 return True
         #print(" not in list")
         return False
 
-    def isExit(self,x, y):
-        if (x,y) == self.exitPt:
+    def isExit(self,curLocation):
+        if curLocation == self.exitPt:
             return True
         return False
 
-    def isEnemy(self, x, y):
-        if (x,y) in self.enemyDict.values():
+    def isEnemy(self, curLocation):
+        if curLocation in self.enemyDict.values():
             return True
         return False
 
@@ -142,7 +139,7 @@ class Game:
     def enemyGenerator(self):
         #enemyList = []
         enemyDict = {}
-        for i in range(floor(log(self.difficulty))):
+        for i in range(floor(log(self.level))):
             x =  randomBlockGenerator()
             y =  randomBlockGenerator()
         #typeOfenemy = ""
@@ -238,19 +235,19 @@ class Game:
                         self.player.move("DOWN")
                     self.updateSteps(1)
                     # check if there is food or exit in the location         
-                    if(self.isFood(self.player.x, self.player.y)):
+                    if(self.isFood(self.player.index)):
                         #self.player.life += 10
                         print("food + 1")
                         self.updateSteps(-10)
 
                     # check if there is the exit point
-                    if(self.isExit(self.player.x, self.player.y)):
+                    if(self.isExit(self.player.index)):
                         print("this is exit!")
                         isRun = False
                         break
 
                     """ when encountered an enemy: steps + 50 or end of game ? """
-                    if(self.isEnemy(self.player.x, self.player.y)):  
+                    if(self.isEnemy(self.player.index)):  
                         print("encounter enemy!")
                         isRun = False
                         break       
