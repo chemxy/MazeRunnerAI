@@ -2,18 +2,15 @@ from Node import Node
 from Object import Object, Food, Wall
 
 class Map:
-    def __init__(self, map_dict=None):
-        if map_dict == None:
-            map_dict = {}
-        self.map_dict = map_dict
+    def __init__(self, nodeList=None):
+        if nodeList == None:
+            nodeList = []
+        self.nodeList = nodeList
 
     """ return a list of nodes in a map """
-    def vertices(self):
-        return list(self.map_dict.keys())
+    def nodes(self):
+        return list(self.nodeList)
 
-    """ return a list of edges in a map """
-    def edges(self):
-        return self.generate_edges()
     
     def generate_edges(self):
         edges = []

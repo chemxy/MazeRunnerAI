@@ -36,7 +36,7 @@ class Node:
         * parameter(s): none.
     """
     def getContents(self):
-        return list(self.contents)
+        return self.contents
 
     """
         * this method adds a new content to the node.

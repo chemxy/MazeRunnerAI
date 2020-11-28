@@ -27,10 +27,10 @@ class Object:
         return str(self.type)
 
     def getIndex(self):
-            return tuple(self.index)
+            return self.index
 
     def getLocation(self):
-        return tuple(self.location)
+        return self.location
 
     def changeTypeTo(self, newType):
         self.type = newType
