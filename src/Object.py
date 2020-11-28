@@ -35,7 +35,7 @@ class Object:
     def changeTypeTo(self, newType):
         self.type = newType
 
-    def toString(self):
+    def __str__(self):
         s = str(self.type) + " : " +str(self.index)
         print(s)
 

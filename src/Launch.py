@@ -36,35 +36,32 @@ def main2():
     BLACK = pygame.Color(0, 0, 0)
 
             
-    b1 = Node(0,0,wallLocation=Wall(0,0))
-    b2 = Node(0,1)
-    b3 = Node(1,0,wallLocation=Wall(1,0))
-    b4 = Node(1,1,wallLocation=Wall(1,1))
-    themap = {b1:[b2,b3],
-                b2:[b1,b4],
-                b3:[b1,b4],
-                b4:[]
-    }
-    gameMap = Map(map_dict=themap)
+    b1 = Node((0,0))
+    b2 = Node((0,1))
+    b3 = Node((1,0))
+    b4 = Node((1,1))
+    nodelist = [b1,b2,b3,b4]
+
+    gameMap = Map(nodelist)
     print("map: ") 
     print(gameMap)
    
     
     print("adding vertex b5")
-    b5 = Node(2,2, wallLocation=(2,2))
+    b1 = Node((1,2))
     gameMap.addVertex(b5)
     print("adding vertex b6")
-    b6 = Node(0,2, wallLocation=(0,2))
+    b1 = Node((2,1))
     gameMap.addVertex(b6)
     print("adding vertex b7")
-    b7 = Node(1,2)
+    b1 = Node((2,2))
     gameMap.addVertex(b7)
     print("vertices added")
     print("map: ") 
     print(gameMap)
 
     print("adding edge b5-b6")
-    gameMap.addEdge((b5,b6))
+    gameMap.addNode((b5,b6))
     print("adding edge b6-b7")
     gameMap.addEdge((b6,b7))
     print("map: ") 

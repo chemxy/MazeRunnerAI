@@ -8,9 +8,9 @@ class Node:
         * parameter(s): 
             - index: a tuple that contains a pair of points i.e. (x,y).
             - isWall: a boolean flag that idicates whether this node is a wall object. i.e. true/False
-            - contents: a list that contains unique objects i.e. each object has a unique type (among Wall, Food, Enemy, Player)
+            - contentList: a list that contains unique objects i.e. each object has a unique type (among Wall, Food, Enemy, Player)
     """
-    def __init__(self, index, isWall=False, contents=None):
+    def __init__(self, index, isWall=False, contentList=None):
         self.x = index[0]
         self.y = index[1]
         self.index = (self.x, self.y)
@@ -19,9 +19,23 @@ class Node:
             self.isWall = True
         else:
             self.isWall = False
-            if contents == None:
-                contents = [] # i.e contents = ["food", "food", "enemy", "player"]
-                self.contents = contents 
+            if contentList == None:
+                contentList = [] # i.e contentList = ["food", "food", "enemy", "player"]
+                self.contentList = contentList 
+    """
+        * this method gets the index of the node, and return it as a tuple.
+        * parameter(s): none.
+    """
+    def getIndex(self):
+        return self.index
+
+    """
+        * this method gets the location(i.e. index*50) of the node, and return it as a tuple.
+        * parameter(s): none.
+    """
+    def getLocation(self):
+        return self.location
+
     """
         * this method sets the node to Wall type.
         * parameter(s): 
@@ -29,14 +43,14 @@ class Node:
     """
     def setToWall(self, index):
         self.isWall == True
-        self.contents = []
+        self.contentList = []
 
     """
         * this method gets the content(s) of the node, and return it as a list.
         * parameter(s): none.
     """
-    def getContents(self):
-        return self.contents
+    def getcontentList(self):
+        return self.contentList
 
     """
         * this method adds a new content to the node.
@@ -44,7 +58,7 @@ class Node:
             - obj: a new Object that has to be a valid type (i.e. Wall, Food, Exit, Enemy, Player)
     """
     def addContent(self,obj):
-        self.contents.append(obj)
+        self.contentList.append(obj)
 
      """
         * this method removes one item in the content(s) list of the node.
@@ -52,7 +66,13 @@ class Node:
             - obj: the Object to be removed.
     """
     def remove(self,obj):
-        for item in self.contents:
+        for item in self.contentList:
             if item.isEqual(obj):
-                self.contents.remove(item)
+                self.contentList.remove(item)
     
+    def __str__(self):
+        if self.isWall == False:
+            response = "index: " + str(self.index) + "\tcontentList: " + str(self.contentList) + "\n"
+        else:
+            response = "index: " + str(self.index) + "\ttype=wall" + "\n"
+        return response
