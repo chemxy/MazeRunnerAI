@@ -60,7 +60,7 @@ class Node:
     def addContent(self,obj):
         self.contentList.append(obj)
 
-     """
+    """
         * this method removes one item in the content(s) list of the node.
         * parameter(s): 
             - obj: the Object to be removed.

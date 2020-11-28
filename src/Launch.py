@@ -48,29 +48,23 @@ def main2():
    
     
     print("adding vertex b5")
-    b1 = Node((1,2))
-    gameMap.addVertex(b5)
+    b5 = Node((1,2))
+    gameMap.addNode(b5)
     print("adding vertex b6")
-    b1 = Node((2,1))
-    gameMap.addVertex(b6)
+    b6 = Node((2,1))
+    gameMap.addNode(b6)
     print("adding vertex b7")
-    b1 = Node((2,2))
-    gameMap.addVertex(b7)
+    b7 = Node((2,2))
+    gameMap.addNode(b7)
     print("vertices added")
     print("map: ") 
     print(gameMap)
 
-    print("adding edge b5-b6")
-    gameMap.addNode((b5,b6))
-    print("adding edge b6-b7")
-    gameMap.addEdge((b6,b7))
-    print("map: ") 
-    print(gameMap)
     # initializing pygame
     pygame.init()
     
     win.blit(background, (0,0))
-    for node in gameMap.vertices():
+    for node in gameMap.nodes():
         if node.isWall == True:
             #print(node.wall.location)
             win.blit(wall, node.location)
@@ -81,4 +75,4 @@ def main2():
 
 # main
 if __name__ == "__main__":
-    main1()
+    main2()
