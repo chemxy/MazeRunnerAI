@@ -13,12 +13,6 @@ class Map:
     def nodes(self):
         return self.nodeList
 
-    def getNode(self, index):
-        for node in self.nodeList:
-            if index == node.index:
-                return node
-        return None
-
     """ 
         * this method adds a new node to the map.
         * parameter(s):

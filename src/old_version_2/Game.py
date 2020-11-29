@@ -52,19 +52,49 @@ class Game:
         # set level
         self.level = 10
         self.stepsCount = 0
-               
-        #generate enemy dictionary
-        self.enemyList = []
+        
+        # load environment
+        self.wallList = self.wallGenerator() #only contains walls
+        print("wall list: " + str(self.wallList))
 
-        #genreate player
-        self.Player=None
+        self.exitPt = self.exitGenerator() # exit point location
+        print("exit point: " + str(self.exitPt))
+        
+        self.foodDict = self.foodGenerator()
+        print("food list: " + str(self.foodDict))
+        
+        # generate enemies
+        self.enemyDict = self.enemyGenerator()
+        print("enemy count: " + str(len(self.enemyDict.keys())))
+        print("keys: " + str(self.enemyDict.keys()))
+        print("vals: " + str(self.enemyDict.values()))
 
-        #initialize map
-        self.gameMap = self.mapGenerator(MAX_BLOCKS)
+        # load character
+        self.player = self.playerGenerator()
+        print("player initial location: " + str(self.player.index))
+        
+    def isFood(self, curLocation):
+        for key in self.foodDict.keys():
+            #print(key)
+            if self.foodDict[key] == curLocation:
+                self.foodDict.pop(key)
+                return True
+        #print(" not in list")
+        return False
 
-    def mapGenerator(self, MAX_BLOCKS):
-        nodelist = []
-        # generate wallList
+    def isExit(self,curLocation):
+        if curLocation == self.exitPt:
+            return True
+        return False
+
+    def isEnemy(self, curLocation):
+        if curLocation in self.enemyDict.values():
+            return True
+        return False
+
+    """" this generates the walls as well as the exit """
+    def wallGenerator(self):
+        #tempwalls = []
         wallList = []
         for i in range(0, MAX_BLOCKS):
             for j in range(0, MAX_BLOCKS):
@@ -80,45 +110,33 @@ class Game:
                 x = randomBlockGenerator() 
                 y = randomBlockGenerator() 
             wallList.append((x,y))
-        print("wall list: " + str(wallList))
-        
-        #generate exit point
+        return wallList        
+    
+    def exitGenerator(self):
         x = randomBlockGenerator() 
         y = randomBlockGenerator() 
-        while (x,y) in wallList:
+        while (x,y) in self.wallList:
             x = randomBlockGenerator() 
             y = randomBlockGenerator() 
-        exitPt = (x,y)
+        return (x,y)
 
-        #generate foodList
-        foodList = []
+    def foodGenerator(self):
+        foodDict = {}
         foodCount = random.randint(0,3) 
         print("foodcount: " + str(foodCount))
         for i in range(foodCount):
             x =  randomBlockGenerator()
             y =  randomBlockGenerator()
-            while ((x,y) in wallList) or ((x,y) == exitPt) or ((x,y) in foodList):
+            while ((x,y) in self.wallList) or ((x,y) == self.exitPt) or ((x,y) in foodDict.values()):
                 x = randomBlockGenerator()
                 y = randomBlockGenerator()         
-            foodList.append((x,y))
+            temp = Food(x,y)
+            foodDict[temp] = (x,y)
+        return foodDict
 
-        #gnerate map and nodes
-        for i in range(0, MAX_BLOCKS):
-            for j in range(0, MAX_BLOCKS):
-                pair = (i,j)
-                if (x,y) in wallList:
-                    nodelist.append(Node(pair, isWall=True))
-                else:
-                    if (x,y) == exitPt:
-                        nodelist.append(Node(pair, isExit=True))
-                    elif (x,y) in foodList:
-                        nodelist.append(Node(pair, containsFood=True))
-                    else:
-                        nodelist.append(Node(pair))
-        gameMap = Map(nodelist)
-
-        # generate enemies
-        enemyList = []
+    def enemyGenerator(self):
+        #enemyList = []
+        enemyDict = {}
         for i in range(floor(log(self.level))):
             x =  randomBlockGenerator()
             y =  randomBlockGenerator()
@@ -128,56 +146,22 @@ class Game:
         #    typeOfenemy = "A"
         #else:
         #    typeOfenemy = "B"
-            while ((x,y) in wallList) or ((x,y) == exitPt) or ((x,y) in foodList) or ((x,y) in enemyList):
+            while ((x,y) in self.wallList) or ((x,y) == self.exitPt) or ((x,y) in self.foodDict.values() or (x,y) in enemyDict.values()):
                 x = randomBlockGenerator()
                 y = randomBlockGenerator()    
-                
-            enemyList.append(Enemy(x,y))
-            
-        self.enemyList = enemyList
-        print("enemy count: " + str(len(enemyList)))
-       
-        # load character
+            temp = Enemy(x,y)     
+            #enemyList.append((x,y))
+            enemyDict[temp] = (x,y)
+        return enemyDict
+
+    def playerGenerator(self):
         x =  randomBlockGenerator()
         y =  randomBlockGenerator()
-        while ((x,y) in wallList) or ((x,y) == exitPt) or ((x,y) in foodList) or ((x,y) in enemyList):
+        while ((x,y) in self.wallList) or ((x,y) == self.exitPt) or ((x,y) in self.foodDict.values() or (x,y) in self.enemyDict.values()):
             x = randomBlockGenerator()
             y = randomBlockGenerator()         
-        self.player =  Player(x,y)
-
-        return gameMap
-    """
-    def isFood(self, curIndex):
-        for item in self.foodList:
-            #print(key)
-            if item == curIndex:
-                self.foodList.remove(item)
-                return True
-        #print(" not in list")
-        return False
-
-    def isExit(self,curIndex):
-        if curIndex == self.exitPt:
-            return True
-        return False
-
-    def isEnemy(self, curIndex):
-        if curIndex in self.enemyDict.values():
-            return True
-        return False
-    """
-
-    def checkNodeType(self, index):
-        node = self.gameMap.getNode(index)
-        if node != None:
-            if node.isWall == True:
-                return "wall"
-            elif node.isExit == True:
-                return "exit"
-            elif node.containsFood == True:
-                return "food"
-            else:
-                return "none"
+        
+        return Player(x,y)
 
     def updateSteps(self, val):
         self.stepsCount += val
@@ -188,17 +172,6 @@ class Game:
         #win.fill(BLACK)
         win.blit(background, (0,0))
         
-        for node in self.gameMap.nodes():
-            #print(str(node.isWall) + str(node.isExit) + str(node.containsFood))
-            if node.isWall == True:
-                win.blit(wall, node.location)
-            else:
-                if node.isExit == True:
-                    win.blit(exit, node.location)
-                elif node.containsFood == True:
-                    win.blit(food, node.location)
-
-        """
         win.blit(exit, (self.exitPt[0]*50, self.exitPt[1]*50))
         
         for (x,y) in self.wallList:
@@ -207,22 +180,22 @@ class Game:
 
         for (x,y) in self.foodDict.values():
             win.blit(food, (x*50, y*50))
-        """
-        for enemy in self.enemyList:
+        
+        for (x,y) in self.enemyDict.values():
             #if enemy.type == "A":
+            enemyA = Enemy(x,y)
             #print(enemyA.animationCount)
-            win.blit(enemy1Animation[int(enemy.animationCount%3)], enemy.location)
-            enemy.animationCount += 1
+            win.blit(enemy1Animation[int(enemyA.animationCount%3)], enemyA.location)
+            enemyA.animationCount += 1
             # check all the count vraiables to loop properly
-            if enemy.animationCount >= 3:  # if animationCount + 1 >= 6 --> each frame is faster
-                enemy.animationCount = 0
+            if enemyA.animationCount >= 3:  # if animationCount + 1 >= 6 --> each frame is faster
+                enemyA.animationCount = 0
             #else:
             #    win.blit(enemy2[int(enemy.animationCount%6)], (int(enemy.x), int(enemy.y)))
             #    enemy.animationCount += 1
                 # check all the count vraiables to loop properly
             #    if enemy.animationCount + 1 > 3:  # if animationCount + 1 >= 6 --> each nod is faster
             #        enemy.animationCount = 0
-
         # updateFrame character
         win.blit(playerAnimation[int(self.player.animationCount%3)], self.player.location)
         self.player.animationCount += 1
@@ -250,16 +223,15 @@ class Game:
                     if (event.key == pygame.K_ESCAPE):
                         isRun = False
                         break
-                    elif (event.key == pygame.K_LEFT ) and (self.checkNodeType((self.player.x - 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x -50, self.player.y)):    
+                    elif (event.key == pygame.K_LEFT ) and ((self.player.x - 1,self.player.y) not in self.wallList): #not(self.isOuterwall(self.player.x -50, self.player.y)):    
                         self.player.move("LEFT")
-                    elif (event.key == pygame.K_RIGHT )  and (self.checkNodeType((self.player.x + 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x+50, self.player.y)):   
+                    elif (event.key == pygame.K_RIGHT )  and ((self.player.x + 1,self.player.y) not in self.wallList): #not(self.isOuterwall(self.player.x+50, self.player.y)):   
                         self.player.move("RIGHT")
-                    elif (event.key == pygame.K_UP ) and (self.checkNodeType((self.player.x,self.player.y-1)) != "wall"): #not(self.isOuterwall(self.player.x , self.player.y-50)):      
+                    elif (event.key == pygame.K_UP ) and ((self.player.x,self.player.y-1) not in self.wallList): #not(self.isOuterwall(self.player.x , self.player.y-50)):      
                         self.player.move("UP")
-                    elif (event.key == pygame.K_DOWN ) and (self.checkNodeType((self.player.x,self.player.y+1)) != "wall"): #not(self.isOuterwall(self.player.x, self.player.y+50)):   
+                    elif (event.key == pygame.K_DOWN ) and ((self.player.x,self.player.y+1) not in self.wallList): #not(self.isOuterwall(self.player.x, self.player.y+50)):   
                         self.player.move("DOWN")
                     self.updateSteps(1)
-                    """
                     # check if there is food or exit in the location         
                     if(self.isFood(self.player.index)):
                         #self.player.life += 10
@@ -272,13 +244,11 @@ class Game:
                         isRun = False
                         break
 
-                     
-                    #when encountered an enemy: steps + 50 or end of game ? 
+                    """ when encountered an enemy: steps + 50 or end of game ? """
                     if(self.isEnemy(self.player.index)):  
                         print("encounter enemy!")
                         isRun = False
                         break       
-                    """
                     #after = str(self.player.x) + "," + str(self.player.y)
                     #print("player move from " + prev + " to " + after)
             #update game frames
