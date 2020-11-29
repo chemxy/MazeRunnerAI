@@ -4,13 +4,8 @@ types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Enemy(Object):
     def __init__(self, x, y): #enemytype = "A" or "B"
-        # character's width and height in pixels
-        #self.player_size = 50
-        # iniitial character x-y coordinates in pixels
-        self.__x = x
-        self.__y = y
-        self.__index = (x,y)
-        self.__location = (x*50, y*50)
+        self.__index = (x, y)
+        self.__location = (x * 50, y * 50)
         # character's idle animation count
         self.animationCount = 0
         #self.life = 100
@@ -25,11 +20,11 @@ class Enemy(Object):
 
     def setX(self, x):
         self.__index = (x, self.__index[1])
-        self.__location = (x*50, self.__index[1]*50)
+        self.__location = (x * 50, self.__index[1] * 50)
 
     def setY(self,y):
         self.__index = (self.__index[0], y)
-        self.__location = (self.__index[0]*50, y*50)
+        self.__location = (self.__index[0] * 50, y * 50)
 
     def getIndex(self):
         return self.__index
@@ -48,6 +43,9 @@ class Enemy(Object):
         y = location[1]
         self.__location = (x, y)
         self.__index = (x/50, y/50)
+
+    def getType(self):
+        return self.__type
 
     def move(self, direction):
         if direction == "UP":

@@ -1,22 +1,22 @@
 types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Object:
-    def __init__(self, x, y, type): #type = "wall", "exit", "food", "player", "enemy"
+    def __init__(self, x, y, type):
         self.__index = (x, y)
-        self.__location = (x*50, y*50)
+        self.__location = (x * 50, y * 50)
         if(type in types.keys()):
             self.__type = type
         else:
             print("ERROR: the input type is not valid!")
 
     def isEqual(self, another):
-        if self.__index == another.index and str(self.__type) == str(another.type):
+        if self.__index == another.getIndex() and str(self.__type) == str(another.getType()):
             return True
         else:
             return False
 
     def isSameLocation(self, another):
-        if self.__index == another.index:
+        if self.__index == another.getIndex():
             return True
         else:
             return False
@@ -29,11 +29,11 @@ class Object:
 
     def setX(self, x):
         self.__index = (x, self.__index[1])
-        self.__location = (x*50, self.__index[1]*50)
+        self.__location = (x * 50, self.__index[1] * 50)
 
     def setY(self,y):
         self.__index = (self.__index[0], y)
-        self.__location = (self.__index[0]*50, y*50)
+        self.__location = (self.__index[0] * 50, y * 50)
 
     def getIndex(self):
         return self.__index
@@ -53,6 +53,9 @@ class Object:
         self.__location = (x, y)
         self.__index = (x/50, y/50)
 
+    def getType(self):
+        return self.__type
+
     def changeTypeTo(self, newType):
         self.__type = newType
 
@@ -69,12 +72,12 @@ class Wall(Object):
 
 class Food(Object):
     def __init__(self, x, y): 
-        self.__index = (x,y)
+        self.__index = (x, y)
         self.__location = (x * 50, y * 50)
         self.__type = "food"
 
 class ExitPoint(Object):
     def __init__(self, x, y): 
-        self.__index = (x,y)
+        self.__index = (x, y)
         self.__location = (x * 50, y * 50)
         self.__type = "exit"

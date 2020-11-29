@@ -4,9 +4,8 @@ types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Player(Object): 
     def __init__(self,x ,y):
-        # iniitial character x-y coordinates in pixels
-        self.__index = (x,y)
-        self.__location = (x*50, y*50)
+        self.__index = (x, y)
+        self.__location = (x * 50, y * 50)
         # character's idle animation count
         self.animationCount = 0
         #self.life = 100
@@ -20,11 +19,11 @@ class Player(Object):
 
     def setX(self, x):
         self.__index = (x, self.__index[1])
-        self.__location = (x*50, self.__index[1]*50)
+        self.__location = (x * 50, self.__index[1] * 50)
 
     def setY(self,y):
         self.__index = (self.__index[0], y)
-        self.__location = (self.__index[0]*50, y*50)
+        self.__location = (self.__index[0] * 50, y * 50)
 
     def getIndex(self):
         return self.__index
@@ -44,6 +43,9 @@ class Player(Object):
         self.__location = (x, y)
         self.__index = (x/50, y/50)
 
+    def getType(self):
+        return self.__type
+    
     def move(self, direction):
         if direction == "UP":
             self.setY(self.__index[1] - 1)
@@ -53,3 +55,5 @@ class Player(Object):
             self.setX(self.__index[0] - 1)
         elif direction == "RIGHT":
            self.setX(self.__index[0] + 1)
+
+    

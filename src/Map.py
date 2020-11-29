@@ -5,14 +5,14 @@ class Map:
     def __init__(self, nodeList=None):
         if nodeList == None:
             nodeList = []
-        self.nodeList = nodeList
+        self.__nodeList = nodeList
 
     """ 
         * this method returns a list of nodes in a map.
         * parameter(s): none.
     """
     def nodes(self):
-        return self.nodeList
+        return self.__nodeList
 
     """ 
         * this method returns the node with a particular index in a map.
@@ -20,7 +20,7 @@ class Map:
             - index: a set of paired points.
     """
     def getNode(self, index):
-        for node in self.nodeList:
+        for node in self.__nodeList:
             if index == node.getIndex():
                 return node
         return None
@@ -43,7 +43,7 @@ class Map:
             - newNode: a new node.
     """
     def addNode(self, newNode):
-        if newNode not in self.nodeList:
+        if newNode not in self.__nodeList:
             self.nodeList.append(newNode)
 
     """
@@ -52,7 +52,7 @@ class Map:
     """
     def __str__(self):
         response = ""
-        for node in self.nodeList:
+        for node in self.__nodeList:
             response += "node: " + str(node) 
         return response
 

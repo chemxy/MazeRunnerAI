@@ -16,9 +16,24 @@ class Node:
         y = index[1]
         self.__index = (x, y)
         self.__location = (x * 50, y * 50)
+        
+        self.__neighbors = []
+        
         self.isWall = isWall
         self.isExit = isExit
         self.containsFood = containsFood
+
+    def isEqual(self, another):
+        if self.__index == another.index and self.isWall == another.isWall and self.isExit == another.isExit and self.containsFood == another.containsFood:
+            return True
+        else:
+            return False
+
+    def isSameLocation(self, another):
+        if self.__index == another.__index:
+            return True
+        else:
+            return False
 
     def getX(self):
         return self.__index[0]
@@ -69,7 +84,6 @@ class Node:
         y = location[1]
         self.__location = (x, y)
         self.__index = (x/50, y/50)
-
 
     """
         * this method sets the node to Wall type.
