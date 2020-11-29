@@ -6,7 +6,7 @@ import pygame
 import random
 import time
 from math import floor,log10, log
-from Object import Object, Food, Wall, ExitPoint
+from Object import *
 from Player import Player
 from Enemy import Enemy
 from Map import Map
@@ -57,7 +57,7 @@ class Game:
         self.enemyList = []
 
         #genreate player
-        self.Player=None
+        self.Player = None
 
         #initialize map
         self.gameMap = self.mapGenerator(MAX_BLOCKS)
@@ -185,16 +185,6 @@ class Game:
                 elif node.containsFood == True:
                     win.blit(food, node.location)
 
-        """
-        win.blit(exit, (self.exitPt[0]*50, self.exitPt[1]*50))
-        
-        for (x,y) in self.wallList:
-            #print(item)
-            win.blit(wall, (x*50, y*50))
-
-        for (x,y) in self.foodDict.values():
-            win.blit(food, (x*50, y*50))
-        """
         for enemy in self.enemyList:
             #if enemy.type == "A":
             #print(enemyA.animationCount)
@@ -224,7 +214,7 @@ class Game:
         isRun = True
         while isRun:
             # set game frame rate
-            clock.tick(30) # the bigger the number, the faster the frame refreshes
+            clock.tick(6) # the bigger the number, the faster the frame refreshes
             # detect QUIT input
             for event in pygame.event.get():
                 #print(event)
@@ -261,7 +251,7 @@ class Game:
                     # check if there is food or exit in the location         
                     if(self.checkNode(self.player.index) == "food"):
                         #self.player.life += 10
-                        print("food + 1")
+                        print("food - 1")
                         self.updateSteps(-10)
                         self.gameMap.changeFood(self.player.index, flag=False)
 
@@ -269,4 +259,4 @@ class Game:
                    
             #update game frames
             self.updateFrame()
-            time.sleep(0.1)
+            #time.sleep(0.1)
