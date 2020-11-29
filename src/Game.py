@@ -1,8 +1,6 @@
 """
 @Author: Xingyun Chen
 @Github: github.com/chemxy
-@All Copyright Reserved.
-
 """
 import pygame
 import random

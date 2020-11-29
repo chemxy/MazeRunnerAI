@@ -36,9 +36,9 @@ def main2():
     BLACK = pygame.Color(0, 0, 0)
 
             
-    b1 = Node((0,0))
-    b2 = Node((0,1))
-    b3 = Node((1,0))
+    b1 = Node((0,0),True)
+    b2 = Node((0,1),True)
+    b3 = Node((1,0),True)
     b4 = Node((1,1))
     nodelist = [b1,b2,b3,b4]
 
@@ -48,13 +48,13 @@ def main2():
    
     
     print("adding vertex b5")
-    b5 = Node((1,2))
+    b5 = Node((1,2),True)
     gameMap.addNode(b5)
     print("adding vertex b6")
     b6 = Node((2,1))
     gameMap.addNode(b6)
     print("adding vertex b7")
-    b7 = Node((2,2))
+    b7 = Node((2,2), True)
     gameMap.addNode(b7)
     print("vertices added")
     print("map: ") 

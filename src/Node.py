@@ -70,6 +70,10 @@ class Node:
             if item.isEqual(obj):
                 self.contentList.remove(item)
     
+    """
+        * this method prints the information of the node.
+        * parameter(s): none.
+    """
     def __str__(self):
         if self.isWall == False:
             response = "index: " + str(self.index) + "\tcontentList: " + str(self.contentList) + "\n"
