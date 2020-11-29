@@ -34,7 +34,11 @@ class Player(Object):
         return self.__index
     
     def setIndex(self, index):
-        self.__index = __index
+        self.__index = index
+        self.__x = index[0]
+        self.__y = index[1]
+        self.__location = (self.__x*50, self.__y*50)
+
 
     def getLocation(self):
         return self.__location
