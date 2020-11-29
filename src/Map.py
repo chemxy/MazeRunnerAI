@@ -19,6 +19,13 @@ class Map:
                 return node
         return None
 
+    def changeFood(self, index, flag=True):
+        
+        if flag:
+            self.getNode(index).addFood()
+        else:
+            self.getNode(index).removeFood()
+
     """ 
         * this method adds a new node to the map.
         * parameter(s):

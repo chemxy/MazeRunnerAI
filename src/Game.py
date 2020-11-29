@@ -105,16 +105,15 @@ class Game:
         #gnerate map and nodes
         for i in range(0, MAX_BLOCKS):
             for j in range(0, MAX_BLOCKS):
-                pair = (i,j)
-                if (x,y) in wallList:
-                    nodelist.append(Node(pair, isWall=True))
+                if (i,j) in wallList:
+                    nodelist.append(Node((i,j), isWall=True))
                 else:
-                    if (x,y) == exitPt:
-                        nodelist.append(Node(pair, isExit=True))
-                    elif (x,y) in foodList:
-                        nodelist.append(Node(pair, containsFood=True))
+                    if (i,j) == exitPt:
+                        nodelist.append(Node((i,j), isExit=True))
+                    elif (i,j) in foodList:
+                        nodelist.append(Node((i,j), containsFood=True))
                     else:
-                        nodelist.append(Node(pair))
+                        nodelist.append(Node((i,j)))
         gameMap = Map(nodelist)
 
         # generate enemies
@@ -135,6 +134,7 @@ class Game:
             enemyList.append(Enemy(x,y))
             
         self.enemyList = enemyList
+        print("enemy list: " + str(enemyList))
         print("enemy count: " + str(len(enemyList)))
        
         # load character
@@ -146,28 +146,15 @@ class Game:
         self.player =  Player(x,y)
 
         return gameMap
-    """
-    def isFood(self, curIndex):
-        for item in self.foodList:
-            #print(key)
-            if item == curIndex:
-                self.foodList.remove(item)
+    
+    def isEnemy(self, index):
+        for enemy in self.enemyList:
+            if enemy.index == index:
                 return True
-        #print(" not in list")
         return False
+    
 
-    def isExit(self,curIndex):
-        if curIndex == self.exitPt:
-            return True
-        return False
-
-    def isEnemy(self, curIndex):
-        if curIndex in self.enemyDict.values():
-            return True
-        return False
-    """
-
-    def checkNodeType(self, index):
+    def checkNode(self, index):
         node = self.gameMap.getNode(index)
         if node != None:
             if node.isWall == True:
@@ -178,6 +165,7 @@ class Game:
                 return "food"
             else:
                 return "none"
+        
 
     def updateSteps(self, val):
         self.stepsCount += val
@@ -189,7 +177,6 @@ class Game:
         win.blit(background, (0,0))
         
         for node in self.gameMap.nodes():
-            #print(str(node.isWall) + str(node.isExit) + str(node.containsFood))
             if node.isWall == True:
                 win.blit(wall, node.location)
             else:
@@ -246,41 +233,40 @@ class Game:
                     break
                 #detect user input
                 elif event.type == pygame.KEYDOWN:
-                    #prev = str(self.player.x) + "," + str(self.player.y)
                     if (event.key == pygame.K_ESCAPE):
                         isRun = False
                         break
-                    elif (event.key == pygame.K_LEFT ) and (self.checkNodeType((self.player.x - 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x -50, self.player.y)):    
+                    elif (event.key == pygame.K_LEFT ) and (self.checkNode((self.player.x - 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x -50, self.player.y)):    
                         self.player.move("LEFT")
-                    elif (event.key == pygame.K_RIGHT )  and (self.checkNodeType((self.player.x + 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x+50, self.player.y)):   
+                    elif (event.key == pygame.K_RIGHT )  and (self.checkNode((self.player.x + 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x+50, self.player.y)):   
                         self.player.move("RIGHT")
-                    elif (event.key == pygame.K_UP ) and (self.checkNodeType((self.player.x,self.player.y-1)) != "wall"): #not(self.isOuterwall(self.player.x , self.player.y-50)):      
+                    elif (event.key == pygame.K_UP ) and (self.checkNode((self.player.x,self.player.y-1)) != "wall"): #not(self.isOuterwall(self.player.x , self.player.y-50)):      
                         self.player.move("UP")
-                    elif (event.key == pygame.K_DOWN ) and (self.checkNodeType((self.player.x,self.player.y+1)) != "wall"): #not(self.isOuterwall(self.player.x, self.player.y+50)):   
+                    elif (event.key == pygame.K_DOWN ) and (self.checkNode((self.player.x,self.player.y+1)) != "wall"): #not(self.isOuterwall(self.player.x, self.player.y+50)):   
                         self.player.move("DOWN")
                     self.updateSteps(1)
-                    """
-                    # check if there is food or exit in the location         
-                    if(self.isFood(self.player.index)):
-                        #self.player.life += 10
-                        print("food + 1")
-                        self.updateSteps(-10)
-
+                    
                     # check if there is the exit point
-                    if(self.isExit(self.player.index)):
+                    if(self.checkNode(self.player.index) == "exit"):
                         print("this is exit!")
                         isRun = False
                         break
 
-                     
                     #when encountered an enemy: steps + 50 or end of game ? 
                     if(self.isEnemy(self.player.index)):  
                         print("encounter enemy!")
                         isRun = False
                         break       
-                    """
-                    #after = str(self.player.x) + "," + str(self.player.y)
-                    #print("player move from " + prev + " to " + after)
+                    
+                    # check if there is food or exit in the location         
+                    if(self.checkNode(self.player.index) == "food"):
+                        #self.player.life += 10
+                        print("food + 1")
+                        self.updateSteps(-10)
+                        self.gameMap.changeFood(self.player.index, flag=False)
+
+                   
+                   
             #update game frames
             self.updateFrame()
             time.sleep(0.1)

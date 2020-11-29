@@ -39,12 +39,28 @@ class Node:
         * parameter(s): 
             - index: a tuple that contains a pair of points i.e. (x,y), x and y less than the number of max blocks.
     """
-    def setToWall(self, index):
+    def setToWall(self):
         self.isWall = True
         self.isExit = False
         self.containsFood = False
 
-    
+    def setToExit(self):
+        self.isWall = False
+        self.isExit = True
+        self.containsFood = False
+
+    def setToNone(self):
+        self.isWall = False
+        self.isExit = False
+        self.containsFood = False
+
+    def addFood(self):
+        self.containsFood = True
+
+    def removeFood(self):
+        self.containsFood = False
+
+
     """
         * this method prints the information of the node.
         * parameter(s): none.
