@@ -18,48 +18,43 @@ class Enemy(Object):
         self.__type = "enemy"
     
     def getX(self):
-        return self.__x
+        return self.__index[0]
 
     def getY(self):
-        return self.__y
+        return self.__index[1]
 
     def setX(self, x):
-        self.__x = x
-        self.__index = (x, self.__y)
-        self.__location = (x*50, self.__y*50)
+        self.__index = (x, self.__index[1])
+        self.__location = (x*50, self.__index[1]*50)
 
     def setY(self,y):
-        self.__y = y
-        self.__index = (self.__x, y)
-        self.__location = (self.__x*50, y*50)
+        self.__index = (self.__index[0], y)
+        self.__location = (self.__index[0]*50, y*50)
 
     def getIndex(self):
         return self.__index
     
     def setIndex(self, index):
-        self.__index = index
-        self.__x = index[0]
-        self.__y = index[1]
-        self.__location = (self.__x*50, self.__y*50)
-
-
+        x = index[0]
+        y = index[1]
+        self.__index = (x, y)
+        self.__location = (x * 50, y * 50)
+        
     def getLocation(self):
         return self.__location
     
     def setLocation(self, location):
-        self.__location = location
-
-    def __updateLocation(self):
-        self.__index = (self.__x, self.__y)
-        self.__location = (self.__x * 50, self.__y * 50)
+        x = location[0]
+        y = location[1]
+        self.__location = (x,y)
+        self.__index = (x/50, y/50)
 
     def move(self, direction):
         if direction == "UP":
-            self.setY(self.y - 1)
+            self.setY(self.__index[1] - 1)
         elif direction == "DOWN":
-            self.setY(self.y + 1)
+            self.setY(self.__index[1] + 1)
         elif direction == "LEFT":
-            self.setX(self.x - 1)
+            self.setX(self.__index[0] - 1)
         elif direction == "RIGHT":
-           self.setX(self.x + 1)
-        self.__updateLocation()
+           self.setX(self.__index[0] + 1)
