@@ -31,9 +31,13 @@ class Object:
 
     def setX(self, x):
         self.__x = x
+        self.__index = (x, self.__y)
+        self.__location = (x*50, self.__y*50)
 
     def setY(self,y):
         self.__y = y
+        self.__index = (self.__x, y)
+        self.__location = (self.__x*50, y*50)
 
     def getIndex(self):
         return self.__index

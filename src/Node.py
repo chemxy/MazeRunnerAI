@@ -39,6 +39,11 @@ class Node:
     def getIndex(self):
         return self.__index
     
+    """
+        * this method sets the index of the node.
+        * parameter(s): 
+            - index: the new index you want to set.
+    """
     def setIndex(self, index):
         self.__index = index
 
@@ -49,6 +54,11 @@ class Node:
     def getLocation(self):
         return self.__location
     
+    """
+        * this method sets the location of the node.
+        * parameter(s): 
+            - location: the new location you want to set.
+    """
     def setLocation(self, location):
         self.__location = location
 
@@ -78,7 +88,6 @@ class Node:
 
     def removeFood(self):
         self.containsFood = False
-
 
     """
         * this method prints the information of the node.
