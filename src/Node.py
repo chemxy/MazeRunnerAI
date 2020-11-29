@@ -12,25 +12,27 @@ class Node:
             - containsFood: a boolean flag that idicates whether this node contains a food object. i.e. true/False
     """
     def __init__(self, index, isWall=False, isExit=False, containsFood=False):
-        self.__x = index[0]
-        self.__y = index[1]
-        self.__index = (index[0], index[1])
-        self.__location = (index[0] * 50, index[1] * 50)
+        x = index[0]
+        y = index[1]
+        self.__index = (x, y)
+        self.__location = (x * 50, y * 50)
         self.isWall = isWall
         self.isExit = isExit
         self.containsFood = containsFood
 
     def getX(self):
-        return self.__x
+        return self.__index[0]
 
     def getY(self):
-        return self.__y
+        return self.__index[1]
 
     def setX(self, x):
-        self.__x = x
+        self.__index = (x, self.__index[1])
+        self.__location = (x*50, self.__index[1]*50)
 
     def setY(self,y):
-        self.__y = y
+        self.__index = (self.__index[0], y)
+        self.__location = (self.__index[0]*50, y*50)
 
     """
         * this method gets the index of the node, and return it as a tuple.
@@ -45,7 +47,10 @@ class Node:
             - index: the new index you want to set.
     """
     def setIndex(self, index):
-        self.__index = index
+        x = index[0]
+        y = index[1]
+        self.__index = (x, y)
+        self.__location = (x * 50, y * 50)
 
     """
         * this method gets the location(i.e. index*50) of the node, and return it as a tuple.
@@ -60,7 +65,10 @@ class Node:
             - location: the new location you want to set.
     """
     def setLocation(self, location):
-        self.__location = location
+        x = location[0]
+        y = location[1]
+        self.__location = (x, y)
+        self.__index = (x/50, y/50)
 
 
     """

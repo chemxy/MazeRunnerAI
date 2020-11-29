@@ -2,7 +2,7 @@ types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Object:
     def __init__(self, x, y, type): #type = "wall", "exit", "food", "player", "enemy"
-        self.__index = (x,y)
+        self.__index = (x, y)
         self.__location = (x*50, y*50)
         if(type in types.keys()):
             self.__type = type
@@ -50,7 +50,7 @@ class Object:
     def setLocation(self, location):
         x = location[0]
         y = location[1]
-        self.__location = (x,y)
+        self.__location = (x, y)
         self.__index = (x/50, y/50)
 
     def changeTypeTo(self, newType):

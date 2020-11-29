@@ -41,9 +41,9 @@ class Player(Object):
     def setLocation(self, location):
         x = location[0]
         y = location[1]
-        self.__location = (x,y)
+        self.__location = (x, y)
         self.__index = (x/50, y/50)
-        
+
     def move(self, direction):
         if direction == "UP":
             self.setY(self.__index[1] - 1)
