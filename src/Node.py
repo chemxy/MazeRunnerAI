@@ -12,27 +12,46 @@ class Node:
             - containsFood: a boolean flag that idicates whether this node contains a food object. i.e. true/False
     """
     def __init__(self, index, isWall=False, isExit=False, containsFood=False):
-        self.x = index[0]
-        self.y = index[1]
-        self.index = (self.x, self.y)
-        self.location = (self.x*50, self.y*50)
+        self.__x = index[0]
+        self.__y = index[1]
+        self.__index = (index[0], index[1])
+        self.__location = (index[0] * 50, index[1] * 50)
         self.isWall = isWall
         self.isExit = isExit
         self.containsFood = containsFood
+
+    def getX(self):
+        return self.__x
+
+    def getY(self):
+        return self.__y
+
+    def setX(self, x):
+        self.__x = x
+
+    def setY(self,y):
+        self.__y = y
 
     """
         * this method gets the index of the node, and return it as a tuple.
         * parameter(s): none.
     """
     def getIndex(self):
-        return self.index
+        return self.__index
+    
+    def setIndex(self, index):
+        self.__index = index
 
     """
         * this method gets the location(i.e. index*50) of the node, and return it as a tuple.
         * parameter(s): none.
     """
     def getLocation(self):
-        return self.location
+        return self.__location
+    
+    def setLocation(self, location):
+        self.__location = location
+
 
     """
         * this method sets the node to Wall type.
@@ -66,8 +85,10 @@ class Node:
         * parameter(s): none.
     """
     def __str__(self):
-        if self.isWall == False:
-            response = "index: " + str(self.index) + "\tcontentList: " + str(self.contentList) + "\n"
-        else:
-            response = "index: " + str(self.index) + "\ttype=wall" + "\n"
+        if self.isWall == True:
+            response = "index: " + str(self.__index) + "\ttype=wall" + "\n"
+        elif self.isExit == True:
+            response = "index: " + str(self.__index) + "\ttype=exit" + "\n"
+        elif self.contains == True:
+            response = "index: " + str(self.__index) + "\ttype=food" + "\n"
         return response

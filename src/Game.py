@@ -178,12 +178,12 @@ class Game:
         
         for node in self.gameMap.nodes():
             if node.isWall == True:
-                win.blit(wall, node.location)
+                win.blit(wall, node.getLocation())
             else:
                 if node.isExit == True:
-                    win.blit(exit, node.location)
+                    win.blit(exit, node.getLocation())
                 elif node.containsFood == True:
-                    win.blit(food, node.location)
+                    win.blit(food, node.getLocation())
 
         for enemy in self.enemyList:
             #if enemy.type == "A":

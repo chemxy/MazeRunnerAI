@@ -15,7 +15,7 @@ class Map:
 
     def getNode(self, index):
         for node in self.nodeList:
-            if index == node.index:
+            if index == node.getIndex():
                 return node
         return None
 
