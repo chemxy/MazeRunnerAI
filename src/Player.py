@@ -4,38 +4,52 @@ types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Player(Object): 
     def __init__(self,x ,y):
-        # character's width and height in pixels
-        #self.player_size = 50
         # iniitial character x-y coordinates in pixels
-        self.x = x
-        self.y = y
-        #print("player initial location: " + str(self.x) + " " +str(self.y))
-        self.index = (x,y)
-        self.location = (x*50, y*50)
+        self.__x = x
+        self.__y = y
+        self.__index = (x,y)
+        self.__location = (x*50, y*50)
         # character's idle animation count
         self.animationCount = 0
         #self.life = 100
-        self.type = "player"
+        self.__type = "player"
+
+    def getX(self):
+        return self.__x
+
+    def getY(self):
+        return self.__y
 
     def setX(self, x):
-        self.x = x
+        self.__x = x
 
     def setY(self,y):
-        self.y = y
+        self.__y = y
 
-    def updateLocation(self):
-        self.index = (self.x,self.y)
-        self.location = (self.x*50, self.y*50)
+    def getIndex(self):
+        return self.__index
+    
+    def setIndex(self, index):
+        self.__index = __index
 
+    def getLocation(self):
+        return self.__location
+    
+    def setLocation(self, location):
+        self.__location = location
+
+    def __updateLocation(self):
+        self.__index = (self.__x,self.__y)
+        self.__location = (self.__x*50, self.__y*50)
+
+   
     def move(self, direction):
         if direction == "UP":
-            self.setY(self.y - 1)
+            self.setY(self.__y - 1)
         elif direction == "DOWN":
-            self.setY(self.y + 1)
+            self.setY(self.__y + 1)
         elif direction == "LEFT":
-            self.setX(self.x - 1)
-
+            self.setX(self.__x - 1)
         elif direction == "RIGHT":
-           self.setX(self.x + 1)
-
-        self.updateLocation()
+           self.setX(self.__x + 1)
+        self.__updateLocation()

@@ -2,65 +2,80 @@ types = {"player":1, "wall":2, "exit":3, "food":4, "enemy":5}
 
 class Object:
     def __init__(self, x, y, type): #type = "wall", "exit", "food", "player", "enemy"
-        self.x = x
-        self.y = y
-        self.index = tuple(self.x, self.y)
-        self.location = tuple(x * 50, y * 50)
+        self.__x = x
+        self.__y = y
+        self.__index = (x,y)
+        self.__location = (x*50, y*50)
         if(type in types.keys()):
-            self.type = type
+            self.__type = type
         else:
             print("ERROR: the input type is not valid!")
 
     def isEqual(self, another):
-        if self.index == another.index and str(self.type) == str(another.type):
+        if self.__index == another.index and str(self.__type) == str(another.type):
             return True
         else:
             return False
 
     def isSameLocation(self, another):
-        if self.index == another.index:
+        if self.__index == another.index:
             return True
         else:
             return False
 
-    def getType(self):
-        return str(self.type)
+    def getX(self):
+        return self.__x
+
+    def getY(self):
+        return self.__y
+
+    def setX(self, x):
+        self.__x = x
+
+    def setY(self,y):
+        self.__y = y
 
     def getIndex(self):
-            return self.index
+        return self.__index
+    
+    def setIndex(self, index):
+        self.__index = index
 
     def getLocation(self):
-        return self.location
+        return self.__location
+    
+    def setLocation(self, location):
+        self.__location = location
 
     def changeTypeTo(self, newType):
-        self.type = newType
+        self.__type = newType
 
     def __str__(self):
-        s = str(self.type) + " : " +str(self.index)
+        s = str(self.__type) + " : " +str(self.__index)
         print(s)
 
 
 class Wall(Object):
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
-        self.type = "wall"
+        self.__x = x
+        self.__y = y
+        self.__index = (x,y)
+        self.__location = (x*50, y*50)
+        self.__type = "wall"
         
 
 class Food(Object):
     def __init__(self, x, y): 
-        self.x = x
-        self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
-        self.type = "food"
+        self.__x = x
+        self.__y = y
+        self.__index = (x,y)
+        self.__location = (x*50, y*50)
+        self.__type = "food"
 
 class ExitPoint(Object):
     def __init__(self, x, y): 
-        self.x = x
-        self.y = y
-        self.index = (self.x, self.y)
-        self.location = (x * 50, y * 50)
-        self.type = "exit"
+        self.__x = x
+        self.__y = y
+        self.__index = (x,y)
+        self.__location = (x*50, y*50)
+        self.__type = "exit"

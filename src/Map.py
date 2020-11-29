@@ -48,7 +48,8 @@ class Map:
     """
         * this method 
     """
-    def findPath(self, curNode, endNode):
+    def findPath(self, start, end):
+        
         return None
 
 """

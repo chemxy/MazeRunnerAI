@@ -149,7 +149,7 @@ class Game:
     
     def isEnemy(self, index):
         for enemy in self.enemyList:
-            if enemy.index == index:
+            if enemy.getIndex() == index:
                 return True
         return False
     
@@ -188,7 +188,7 @@ class Game:
         for enemy in self.enemyList:
             #if enemy.type == "A":
             #print(enemyA.animationCount)
-            win.blit(enemy1Animation[int(enemy.animationCount%3)], enemy.location)
+            win.blit(enemy1Animation[int(enemy.animationCount%3)], enemy.getLocation())
             enemy.animationCount += 1
             # check all the count vraiables to loop properly
             if enemy.animationCount >= 3:  # if animationCount + 1 >= 6 --> each frame is faster
@@ -201,7 +201,7 @@ class Game:
             #        enemy.animationCount = 0
 
         # updateFrame character
-        win.blit(playerAnimation[int(self.player.animationCount%3)], self.player.location)
+        win.blit(playerAnimation[int(self.player.animationCount%3)], self.player.getLocation())
         self.player.animationCount += 1
         # check all the count vraiables to loop properly
         if self.player.animationCount >= 3:  # if animationCount + 1 >= 6 --> each frame is faster
@@ -215,6 +215,26 @@ class Game:
         while isRun:
             # set game frame rate
             clock.tick(6) # the bigger the number, the faster the frame refreshes
+
+            # check if there is the exit point
+            if(self.checkNode(self.player.getIndex()) == "exit"):
+                print("this is exit!")
+                isRun = False
+                break
+
+            # when encountered an enemy: steps + 50 or end of game ? 
+            if(self.isEnemy(self.player.getIndex())):  
+                print("encounter enemy!")
+                isRun = False
+                break       
+                    
+            # check if there is food or exit in the location         
+            if(self.checkNode(self.player.getIndex()) == "food"):
+                        #self.player.life += 10
+                print("food - 1")
+                self.updateSteps(-10)
+                self.gameMap.changeFood(self.player.getIndex(), flag=False)
+
             # detect QUIT input
             for event in pygame.event.get():
                 #print(event)
@@ -226,37 +246,16 @@ class Game:
                     if (event.key == pygame.K_ESCAPE):
                         isRun = False
                         break
-                    elif (event.key == pygame.K_LEFT ) and (self.checkNode((self.player.x - 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x -50, self.player.y)):    
+                    elif (event.key == pygame.K_LEFT ) and (self.checkNode((self.player.getX() - 1,self.player.getY())) != "wall"): #not(self.isOuterwall(self.player.getX() -50, self.player.getY())):    
                         self.player.move("LEFT")
-                    elif (event.key == pygame.K_RIGHT )  and (self.checkNode((self.player.x + 1,self.player.y)) != "wall"): #not(self.isOuterwall(self.player.x+50, self.player.y)):   
+                    elif (event.key == pygame.K_RIGHT )  and (self.checkNode((self.player.getX() + 1,self.player.getY())) != "wall"): #not(self.isOuterwall(self.player.getX()+50, self.player.getY())):   
                         self.player.move("RIGHT")
-                    elif (event.key == pygame.K_UP ) and (self.checkNode((self.player.x,self.player.y-1)) != "wall"): #not(self.isOuterwall(self.player.x , self.player.y-50)):      
+                    elif (event.key == pygame.K_UP ) and (self.checkNode((self.player.getX(),self.player.getY()-1)) != "wall"): #not(self.isOuterwall(self.player.getX() , self.player.getY()-50)):      
                         self.player.move("UP")
-                    elif (event.key == pygame.K_DOWN ) and (self.checkNode((self.player.x,self.player.y+1)) != "wall"): #not(self.isOuterwall(self.player.x, self.player.y+50)):   
+                    elif (event.key == pygame.K_DOWN ) and (self.checkNode((self.player.getX(),self.player.getY()+1)) != "wall"): #not(self.isOuterwall(self.player.getX(), self.player.getY()+50)):   
                         self.player.move("DOWN")
                     self.updateSteps(1)
-                    
-                    # check if there is the exit point
-                    if(self.checkNode(self.player.index) == "exit"):
-                        print("this is exit!")
-                        isRun = False
-                        break
-
-                    #when encountered an enemy: steps + 50 or end of game ? 
-                    if(self.isEnemy(self.player.index)):  
-                        print("encounter enemy!")
-                        isRun = False
-                        break       
-                    
-                    # check if there is food or exit in the location         
-                    if(self.checkNode(self.player.index) == "food"):
-                        #self.player.life += 10
-                        print("food - 1")
-                        self.updateSteps(-10)
-                        self.gameMap.changeFood(self.player.index, flag=False)
-
-                   
-                   
+                
             #update game frames
             self.updateFrame()
             #time.sleep(0.1)
