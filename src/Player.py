@@ -13,6 +13,9 @@ class Player(Object):
         #self.life = 100
         self.__type = "player"
 
+        # remember where you have been
+        self.pathHistory = []
+
     def getX(self):
         return self.__index[0]
 
@@ -65,9 +68,6 @@ class Player(Object):
             print("stayed on the same location.")
             return False
 
-    # def moveTo(self, index):
-    #   self.setIndex(index)
-
     def perceive(self, percept):
         neighbors = percept
         accessibleNeighbors = []
@@ -77,6 +77,7 @@ class Player(Object):
                   str(node.isExit) + " / isEnemy: " + str(node.isEnemy) + " / isFood: " + str(node.isFood))
             if node.isExit == True:
                 accessibleNeighbors.append(node)
+                break
             elif node.isWall == True:
                 print("node: " + str(node.getIndex()) + " is wall.")
             else:
