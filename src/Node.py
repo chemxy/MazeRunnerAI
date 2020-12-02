@@ -138,4 +138,6 @@ class Node:
             response = "index: " + str(self.__index) + "\ttype=exit" + "\n"
         elif self.isFood == True:
             response = "index: " + str(self.__index) + "\ttype=food" + "\n"
+        else:
+            response = "index: " + str(self.__index) + "\ttype=none" + "\n"
         return response
