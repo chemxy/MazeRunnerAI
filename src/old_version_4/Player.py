@@ -1,10 +1,10 @@
-
+from Object import Object
 import random
 
 types = {"player": 1, "wall": 2, "exit": 3, "food": 4, "enemy": 5}
 
 
-class Player():
+class Player(Object):
     def __init__(self, x, y):
         self.__index = (x, y)
         self.__location = (x * 50, y * 50)
@@ -16,21 +16,21 @@ class Player():
         # record path history - dictionary {cordinates: number of times visited}
         self.pathHistory = {}
 
-    def get_x(self):
+    def getX(self):
         return self.__index[0]
 
-    def get_y(self):
+    def getY(self):
         return self.__index[1]
 
-    def set_x(self, x):
+    def setX(self, x):
         self.__index = (x, self.__index[1])
         self.__location = (x * 50, self.__index[1] * 50)
 
-    def set_y(self, y):
+    def setY(self, y):
         self.__index = (self.__index[0], y)
         self.__location = (self.__index[0] * 50, y * 50)
 
-    def get_index(self):
+    def getIndex(self):
         return self.__index
 
     def setIndex(self, index):
@@ -39,7 +39,7 @@ class Player():
         self.__index = (x, y)
         self.__location = (x * 50, y * 50)
 
-    def get_location(self):
+    def getLocation(self):
         return self.__location
 
     def setLocation(self, location):
@@ -48,21 +48,21 @@ class Player():
         self.__location = (x, y)
         self.__index = (x / 50, y / 50)
 
-    def get_type(self):
+    def getType(self):
         return self.__type
 
     def move(self, direction):
         if direction == "UP":
-            self.set_y(self.__index[1] - 1)
+            self.setY(self.__index[1] - 1)
             return True
         elif direction == "DOWN":
-            self.set_y(self.__index[1] + 1)
+            self.setY(self.__index[1] + 1)
             return True
         elif direction == "LEFT":
-            self.set_x(self.__index[0] - 1)
+            self.setX(self.__index[0] - 1)
             return True
         elif direction == "RIGHT":
-            self.set_x(self.__index[0] + 1)
+            self.setX(self.__index[0] + 1)
             return True
         else:
             print("stayed on the same location.")
@@ -73,16 +73,16 @@ class Player():
         accessibleNeighbors = []
         action = "NONE"
         for node in neighbors.keys():
-            # print("node: " + str(node.get_location()) + " / isWall: " + str(node.isWall) + " / isExit: " +
+            # print("node: " + str(node.getLocation()) + " / isWall: " + str(node.isWall) + " / isExit: " +
             # str(node.isExit) + " / isEnemy: " + str(node.isEnemy) + " / isFood: " + str(node.isFood))
             if node.isExit == True:
                 accessibleNeighbors.append(node)
                 break
             elif node.isWall == True:
-                print("node: " + str(node.get_index()) + " is wall.")
+                print("node: " + str(node.getIndex()) + " is wall.")
             else:
                 if node.isEnemy == True:
-                    print("node: " + str(node.get_index()) + " is enemy.")
+                    print("node: " + str(node.getIndex()) + " is enemy.")
                 elif node.isFood == True:
                     accessibleNeighbors.append(node)
                 else:
@@ -95,17 +95,17 @@ class Player():
             # print(accessibleNeighbors[0])
 
             if accessibleNeighbors[0] not in self.pathHistory.keys():
-                self.pathHistory[accessibleNeighbors[0].get_index()] = 1
+                self.pathHistory[accessibleNeighbors[0].getIndex()] = 1
             else:
-                # print(self.pathHistory[accessibleNeighbors[0].get_index()])
-                self.pathHistory[accessibleNeighbors[0].get_index()] += 1
+                # print(self.pathHistory[accessibleNeighbors[0].getIndex()])
+                self.pathHistory[accessibleNeighbors[0].getIndex()] += 1
         elif len(accessibleNeighbors) > 1:
             x = random.randint(0, len(accessibleNeighbors) - 1)
             action = str(neighbors[accessibleNeighbors[x]])
 
-            if accessibleNeighbors[x].get_index() not in self.pathHistory.keys():
-                self.pathHistory[accessibleNeighbors[x].get_index()] = 1
+            if accessibleNeighbors[x].getIndex() not in self.pathHistory.keys():
+                self.pathHistory[accessibleNeighbors[x].getIndex()] = 1
             else:
-                # print(self.pathHistory[accessibleNeighbors[x].get_index()])
-                self.pathHistory[accessibleNeighbors[x].get_index()] += 1
+                # print(self.pathHistory[accessibleNeighbors[x].getIndex()])
+                self.pathHistory[accessibleNeighbors[x].getIndex()] += 1
         return action

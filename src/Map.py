@@ -1,20 +1,49 @@
 from Node import Node
-from Object import Object, Food, Wall
 
 
 class Map:
-    def __init__(self, nodeList=None):
-        if nodeList == None:
-            nodeList = []
-        self.__nodeList = nodeList
+    """
+        exit_index : (x,y)
+        node_list : list
+        food_count : int
+    """
 
+    def __init__(self, node_list, food_list, exit_index, enemy_list=None):
+        self.__node_list = node_list
+        self.__exit_index = exit_index
+        self.__food_list = food_list
+        self.__show_exit = False
+        if enemy_list == None:
+            enemy_list = []
+        self.__enemy_list = enemy_list
+
+    def get_exit_location(self):
+
+        return (self.__exit_index[0] * 50, self.__exit_index[1] * 50)
+
+    def get_food_count(self):
+        return len(self.__food_list)
+
+    def get_food_list(self):
+        return self.__food_list
+
+    def remove_food_from_list(self, index):
+        for item in self.__food_list:
+            if item == index:
+                self.__food_list.remove(item)
+
+    def get_enemy_count(self):
+        return len(self.__enemy_list)
+
+    def get_enemy_list(self):
+        return self.__enemy_list
     """ 
         * this method returns a list of nodes in a map.
         * parameter(s): none.
     """
 
-    def nodes(self):
-        return self.__nodeList
+    def get_nodes(self):
+        return self.__node_list
 
     """ 
         * this method returns the node with a particular index in a map.
@@ -22,24 +51,17 @@ class Map:
             - index: a set of paired points.
     """
 
-    def getNode(self, index):
-        for node in self.__nodeList:
-            if index == node.getIndex():
+    def get_node(self, index):
+        for node in self.__node_list:
+            if index == node.get_index():
                 return node
         return None
 
-    """ 
-        * this method changes __containsFood property.
-        * parameter(s): 
-            - index: the index of the node you wanted to change.
-            - flag: the change you want to make i.e. change to True/False.
-    """
+    def get_show_exit(self):
+        return self.__show_exit
 
-    def changeFood(self, index, flag=True):
-        if flag:
-            self.getNode(index).addFood()
-        else:
-            self.getNode(index).removeFood()
+    def set_show_exit(self, val):
+        self.__show_exit = val
 
     """ 
         * this method adds a new node to the map.
@@ -47,9 +69,9 @@ class Map:
             - newNode: a new node.
     """
 
-    def addNode(self, newNode):
-        if newNode not in self.__nodeList:
-            self.__nodeList.append(newNode)
+    def add_node(self, newNode):
+        if newNode not in self.__node_list:
+            self.__node_list.append(newNode)
 
     """
         * this method prints the information of the map (i.e. print each node in the node list).
@@ -58,22 +80,22 @@ class Map:
 
     def __str__(self):
         response = ""
-        for node in self.__nodeList:
+        for node in self.__node_list:
             response += "node: " + str(node)
         return response
 
-    def checkNeighbors(self, index):
+    def check_neighbors(self, index):
         x = index[0]
         y = index[1]
         neighbors = {}
-        for node in self.__nodeList:
-            if node.getIndex() == (x + 1, y):
+        for node in self.__node_list:
+            if node.get_index() == (x + 1, y):
                 neighbors[node] = "RIGHT"
-            elif node.getIndex() == (x, y + 1):
+            elif node.get_index() == (x, y + 1):
                 neighbors[node] = "DOWN"
-            elif node.getIndex() == (x - 1, y):
+            elif node.get_index() == (x - 1, y):
                 neighbors[node] = "LEFT"
-            elif node.getIndex() == (x, y - 1):
+            elif node.get_index() == (x, y - 1):
                 neighbors[node] = "UP"
         return neighbors
 
