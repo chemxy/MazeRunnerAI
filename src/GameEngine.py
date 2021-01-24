@@ -69,6 +69,8 @@ class Game:
         # record path history
         self.pathHistory = []
 
+        self.isRun = True
+
     """
         generate food count based on level
     """
@@ -224,26 +226,30 @@ class Game:
 
     def run(self):
         # main loop
-        isRun = True
-        while isRun:
+        self.isRun = True
+        while self.isRun:
             # set game frame rate
             # the bigger the number, the faster the frame refreshes
             clock.tick(6)
 
             if self.map.get_food_count() == 0:
                 self.map.set_show_exit(True)
+                self.map.enable_exit()
             self.is_food(self.player.get_index())
-
+            if self.map.get_exit_enabled() == True:
+                if self.player.get_index() == self.map.get_exit_index():
+                    self.isRun = False
+                    break
             # detect QUIT input
             for event in pygame.event.get():
                 # print(event)
                 if event.type == pygame.QUIT:
-                    isRun = False
+                    self.isRun = False
                     break
                 # detect user input
                 elif event.type == pygame.KEYDOWN:
                     if (event.key == pygame.K_ESCAPE):
-                        isRun = False
+                        self.isRun = False
                         break
                     elif (event.key == pygame.K_LEFT) and (self.is_wall((self.player.get_x() - 1, self.player.get_y())) != True):
                         self.player.move("LEFT")

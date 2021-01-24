@@ -16,9 +16,12 @@ class Map:
         if enemy_list == None:
             enemy_list = []
         self.__enemy_list = enemy_list
+        self.__exit_enabled = False
+
+    def get_exit_index(self):
+        return self.__exit_index
 
     def get_exit_location(self):
-
         return (self.__exit_index[0] * 50, self.__exit_index[1] * 50)
 
     def get_food_count(self):
@@ -62,6 +65,15 @@ class Map:
 
     def set_show_exit(self, val):
         self.__show_exit = val
+
+    def get_exit_enabled(self):
+        return self.__exit_enabled
+
+    def enable_exit(self):
+        self.__exit_enabled = True
+
+    def disable_exit(self):
+        self.__exit_enabled = False
 
     """ 
         * this method adds a new node to the map.
