@@ -236,10 +236,12 @@ class Game:
                 self.map.set_show_exit(True)
                 self.map.enable_exit()
             self.is_food(self.player.get_index())
+
             if self.map.get_exit_enabled() == True:
                 if self.player.get_index() == self.map.get_exit_index():
                     self.isRun = False
                     break
+
             # detect QUIT input
             for event in pygame.event.get():
                 # print(event)

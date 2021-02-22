@@ -5,7 +5,7 @@ from Map import Map
 from Node import Node
 
 
-def main1():
+def main():
     # initializing pygame
     pygame.init()
 
@@ -26,4 +26,4 @@ def main1():
 
 # main
 if __name__ == "__main__":
-    main1()
+    main()
