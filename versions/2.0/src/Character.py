@@ -1,27 +1,14 @@
 import random
-from Agent import Agent
 
-class Character(Agent):
+class Character():
+ 
     def __init__(self, coordinates):
-       super().__init__(coordinates)
-       self.__pathHistory = {}   # record path history - dictionary {cordinates: number of times visited}
-    
-    def move(self, direction):
-        if direction == "UP":
-            self.set_y(self.__index[1] - 1)
-            return True
-        elif direction == "DOWN":
-            self.set_y(self.__index[1] + 1)
-            return True
-        elif direction == "LEFT":
-            self.set_x(self.__index[0] - 1)
-            return True
-        elif direction == "RIGHT":
-            self.set_x(self.__index[0] + 1)
-            return True
-        else:
-            print("stayed on the same location.")
-            return False
+        self.__coordinates = coordinates  # (x,y)
+        self.animationCount = 0  # character's idle animation count
+        self.__pathHistory = {}   # record path history - dictionary {cordinates: number of times visited}
+
+    def get_coordinates(self):
+        return self.__coordinates
 
     def perceive(self, percept):
         neighbors = percept

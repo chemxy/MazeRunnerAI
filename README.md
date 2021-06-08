@@ -31,6 +31,20 @@ The character preserves a history list of the path he has sensed and walked thro
 
 # Reference
 
+## Cell Type Enum
+
+Ground: 0
+
+Wall: 1	
+
+Exit: 2
+
+Gold: 3
+
+Trap: 4
+
+
+
 ## Map Structure
 
 The map is a dictionary with the following structure:
@@ -57,3 +71,6 @@ The map is a dictionary with the following structure:
         
     }
 ```
+
+
+
