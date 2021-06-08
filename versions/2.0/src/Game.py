@@ -41,7 +41,7 @@ class Game:
     def __init__(self):
         
         self.level = 1  # init level
-        self.isRun = True   # let game run
+        self.__isRun = False
         self.__render_scale = 50    # set render scale
 
     def init_map(self, map_path):
@@ -83,28 +83,24 @@ class Game:
 
     def run(self):
         # main loop
-        self.isRun = True
-        while self.isRun:
-            # set game frame rate
-            # the bigger the number, the faster the frame refreshes
-            clock.tick(6)
+        self.__isRun = True
+        while self.__isRun:
+           
+            clock.tick(6)    # set game frame rate. the bigger the number, the faster the frame refreshes
+            self.render()    # render the game
 
-            # detect QUIT input
+            # detect QUIT command from user inputs
             for event in pygame.event.get():
                 # print(event)
-                if event.type == pygame.QUIT:
-                    self.isRun = False
-                    break
-                # detect user input
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.QUIT:   # if user directly close the game window
+                    self.__isRun = False
+                    break   
+                elif event.type == pygame.KEYDOWN:  # if the user press Escape key
                     if (event.key == pygame.K_ESCAPE):
-                        self.isRun = False
+                        self.__isRun = False
                         break
                    
-
-            # update game frames
-            self.render()
-            # time.sleep(0.1)
+           
 
 
 # test and debug

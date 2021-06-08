@@ -43,10 +43,10 @@ class Cell:
 # test and debug
 if __name__ == "__main__":   
 
-    # cell1 = Cell(1,2, "0")
-    # cell2 = Cell(1,2, "1")
-    # cell3 = Cell(1,2, "2")
-    # cell4 = Cell(1,2, "x")
-    # cell5 = Cell(1,2, "3")
+    cell1 = Cell(1,2, "0")
+    cell2 = Cell(1,2, "1")
+    cell3 = Cell(1,2, "2")
+    cell4 = Cell(1,2, "x")
+    cell5 = Cell(1,2, "3")
     cell6 = Cell(1,2, "e")
     
