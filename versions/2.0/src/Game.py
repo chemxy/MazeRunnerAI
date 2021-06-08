@@ -64,19 +64,6 @@ class Game:
         # win.fill(BLACK)
         window.blit(background, (0, 0))
         
-        # # render walls, exit, traps and enemies on the map
-        # for k,v in self.get_map().get_map().items():
-        #     if v.is_wall() is True:
-        #         window.blit(wall_pic, self.__scale_coordinates(k))
-        #     elif v.is_exit() is True:
-        #          window.blit(exit_pic, self.__scale_coordinates(k))
-        #     elif v.has_gold() is True:
-        #         window.blit(food_pic, self.__scale_coordinates(k))
-        #     elif v.has_trap() is True:
-        #         window.blit(trap_pic, self.__scale_coordinates(k))
-        #     elif v.get_enemy() is not None:
-        #         window.blit(enemy1Animation[int(v.get_enemy().animationCount % 3)], self.__scale_coordinates(k))
-        #         v.get_enemy().animationCount = (v.get_enemy().animationCount + 1)  % 3
         # render walls, exit, traps and enemies on the map
         for k,v in self.get_map().get_cells().items():  
             if v.get_cell_type() == CellType.WALL:    # wall
@@ -90,7 +77,6 @@ class Game:
             elif v.get_cell_type() == CellType.ENEMY: # enemy
                 window.blit(enemy1Animation[int(v.get_cell_type_value().animationCount % 3)], self.__scale(k))
                 v.get_cell_type_value().animationCount = (v.get_cell_type_value().animationCount + 1)  % 3
-            
 
         # render the character on the map
         window.blit(playerAnimation[int(self.__agent.animationCount % 3)], self.__scale(self.__agent.get_coordinates()))
@@ -118,7 +104,7 @@ class Game:
                         self.__isRun = False
                         break
                    
-           
+
 
 
 # test and debug
