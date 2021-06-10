@@ -4,8 +4,9 @@ from Cell import Cell
 class Map:
 
     def __init__(self, map_path):
-        self.__cells = self.load_cells(map_path)    # a dict
+        self.__cells = self.load_cells(map_path)    # init all cells in a dictionary
         self.__exit_enabled = False
+        self.__agent_coordinates = (self.get_start_coordinates()) # init agent's location
 
     def get_map_size(self):
         return self.__map_size
@@ -19,6 +20,12 @@ class Map:
     def get_cell_at(self, coordinates):
         return self.__cells[coordinates]
 
+    def get_agent_coordinates(self):
+        return self.__agent_coordinates
+
+    def set_agent_coordinates(self, coordinates):
+         self.__agent_coordinates = coordinates
+         
     # def show_exit(self):
     #     self.__exit_enabled = True
 
@@ -28,8 +35,7 @@ class Map:
         f.close()   # close map file
 
         self.__map_size = int(lines[0])  # init map size
-        self.__start_coordinates = (int(lines[1].split(",")[0]), int(
-            lines[1].split(",")[1]))  # init start location
+        self.__start_coordinates = (int(lines[1].split(",")[0]), int(lines[1].split(",")[1]))  # init start location
 
         # create a map based on the map file
         map = {}  # init map

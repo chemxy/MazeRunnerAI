@@ -1,14 +1,11 @@
 import random
 
-class Character():
+class Agent():
  
-    def __init__(self, coordinates):
-        self.__coordinates = coordinates  # (x,y)
+    def __init__(self):
+       
         self.animationCount = 0  # character's idle animation count
         self.__pathHistory = {}   # record path history - dictionary {cordinates: number of times visited}
-
-    def get_coordinates(self):
-        return self.__coordinates
 
     # def perceive(self, percept):
     #     neighbors = percept

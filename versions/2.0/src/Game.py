@@ -1,7 +1,8 @@
 import pygame
-from Character import Character
+from Agent import Agent
 from CellType import CellType
 from Map import Map
+from Direction import Direction
 
 # setting up some global variables...
 
@@ -44,6 +45,7 @@ class Game:
         self.level = 1  # init level
         self.__isRun = False
         self.__render_scale = 50    # set render scale
+        self.__animation_count = 0
 
     def init_map(self, map_path):
         self.__map = Map(map_path) # init map canvas
@@ -52,14 +54,28 @@ class Game:
         return self.__map    
 
     def init_agent(self):
-        self.__agent = Character(self.__map.get_start_coordinates())   # init an agent
-   
-   
+        self.__agent = Agent()   # init an agent
+
     """scale the coordinates by a factor
     """
     def __scale(self, coordinates): 
         return tuple([coordinate * self.__render_scale for coordinate in coordinates])
 
+    def move(self, direction):
+        x = self.get_map().get_agent_coordinates()[0]
+        y = self.get_map().get_agent_coordinates()[1]
+        if direction == Direction.UP:
+            new_coordinates = (x, y-1)
+        elif direction == Direction.DOWN:
+              new_coordinates = (x, y+1)
+        elif  direction == Direction.LEFT:
+            new_coordinates = (x-1, y)
+        elif  direction == Direction.RIGHT:
+           new_coordinates = (x+1, y)
+
+        if self.get_map().get_cell_at(new_coordinates).get_cell_type() is not CellType.WALL:
+            self.get_map().set_agent_coordinates(new_coordinates)
+    
     def render(self):
         # win.fill(BLACK)
         window.blit(background, (0, 0))
@@ -76,12 +92,17 @@ class Game:
                 window.blit(trap_pic, self.__scale(k))
             elif v.get_cell_type() == CellType.ENEMY: # enemy
                 window.blit(enemy1Animation[int(v.get_cell_type_value().animationCount % 3)], self.__scale(k))
-                v.get_cell_type_value().animationCount = (v.get_cell_type_value().animationCount + 1)  % 3
+                if self.__animation_count % 15  == 0:
+                    v.get_cell_type_value().animationCount += 1
 
         # render the character on the map
-        window.blit(playerAnimation[int(self.__agent.animationCount % 3)], self.__scale(self.__agent.get_coordinates()))
-        self.__agent.animationCount =  (self.__agent.animationCount + 1) % 3
-      
+       
+        window.blit(playerAnimation[int(self.__agent.animationCount % 3)], self.__scale(self.__map.get_agent_coordinates()))
+        if self.__animation_count % 15  == 0:
+            self.__agent.animationCount += 1
+        
+        self.__animation_count += 1
+
         # update display
         pygame.display.update()
 
@@ -90,12 +111,12 @@ class Game:
         self.__isRun = True
         while self.__isRun:
            
-            clock.tick(6)    # set game frame rate. the bigger the number, the faster the frame refreshes
+            clock.tick(60)    # set game frame rate. the bigger the number, the faster the frame refreshes
             self.render()    # render the game
 
             # detect QUIT command from user inputs
             for event in pygame.event.get():
-                # print(event)
+                # print(event.type)
                 if event.type == pygame.QUIT:   # if user directly close the game window
                     self.__isRun = False
                     break   
@@ -103,7 +124,17 @@ class Game:
                     if (event.key == pygame.K_ESCAPE):
                         self.__isRun = False
                         break
-                   
+                    elif (event.key == pygame.K_LEFT):
+                        self.move(Direction.LEFT)
+                    # not(self.isOuterwall(self.player.getX()+SCALE, self.player.getY())):
+                    elif (event.key == pygame.K_RIGHT):
+                        self.move(Direction.RIGHT)
+                    # not(self.isOuterwall(self.player.getX() , self.player.getY()-SCALE)):
+                    elif (event.key == pygame.K_UP):
+                        self.move(Direction.UP)
+                    # not(self.isOuterwall(self.player.getX(), self.player.getY()+SCALE)):
+                    elif (event.key == pygame.K_DOWN):
+                        self.move(Direction.DOWN)
 
 
 

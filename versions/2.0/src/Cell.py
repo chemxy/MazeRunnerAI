@@ -6,7 +6,7 @@ class Cell:
     def __init__(self, x, y, cell_type):
         self.__coordinates = (x, y) # set the (x,y) coordinates
 
-        # set the cell type
+        # set the cell type based on the char/digit on the map file
         if cell_type == "0":
             self.__cell_type = CellType.GROUND
         elif cell_type == "1":

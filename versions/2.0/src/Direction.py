@@ -1,8 +1,8 @@
-from enum import Enum, auto
+from enum import Enum, unique
 
-class CellType(Enum):
-    UP = auto()
-    DOWN = auto()
-    LEFT = auto()
-    RIGHT = auto()
+class Direction(Enum):
+    UP = "UP"
+    DOWN = "DOWN"
+    LEFT = "LEFT"
+    RIGHT = "RIGHT"
     
