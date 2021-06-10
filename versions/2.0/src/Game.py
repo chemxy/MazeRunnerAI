@@ -20,17 +20,17 @@ root_path = "../../../"
 images_path = root_path + "/images"
 maps_path = root_path + "/maps"
 
-playerAnimation = [pygame.image.load(images_path + '/PlayerIdle1.png'), 
-                    pygame.image.load(images_path + '/PlayerIdle2.png'), 
+playerAnimation = [pygame.image.load(images_path + '/PlayerIdle1.png'),
+                    pygame.image.load(images_path + '/PlayerIdle2.png'),
                     pygame.image.load(images_path + '/PlayerIdle3.png'),
-                   pygame.image.load(images_path + '/PlayerIdle4.png'), 
-                   pygame.image.load(images_path + '/PlayerIdle5.png'), 
+                   pygame.image.load(images_path + '/PlayerIdle4.png'),
+                   pygame.image.load(images_path + '/PlayerIdle5.png'),
                    pygame.image.load(images_path + '/PlayerIdle6.png')]
-enemy1Animation = [pygame.image.load(images_path + '/Enemy1_1.png'), 
-                pygame.image.load(images_path + '/Enemy1_2.png'), 
+enemy1Animation = [pygame.image.load(images_path + '/Enemy1_1.png'),
+                pygame.image.load(images_path + '/Enemy1_2.png'),
                 pygame.image.load(images_path + '/Enemy1_3.png')]
-# enemy2Animation = [pygame.image.load(images_path + '/Enemy2_1.png'), 
-#           pygame.image.load(images_path + '/Enemy2_2.png'), 
+# enemy2Animation = [pygame.image.load(images_path + '/Enemy2_1.png'),
+#           pygame.image.load(images_path + '/Enemy2_2.png'),
 #           pygame.image.load(images_path + '/Enemy2_3.png')]
 wall_pic = pygame.image.load(images_path + '/OuterWall1.png')
 trap_pic = pygame.image.load(images_path + '/Trap.png')
@@ -39,27 +39,49 @@ food_pic = pygame.image.load(images_path + '/Food.png')
 exit_pic = pygame.image.load(images_path + '/Exit.png')
 background = pygame.image.load(images_path + '/Background.png')
 
+
 class Game:
     def __init__(self):
-        
+
         self.level = 1  # init level
         self.__isRun = False
         self.__render_scale = 50    # set render scale
         self.__animation_count = 0
 
     def init_map(self, map_path):
-        self.__map = Map(map_path) # init map canvas
+        self.__map = Map(map_path)  # init map canvas
 
     def get_map(self):
-        return self.__map    
+        return self.__map
 
     def init_agent(self):
         self.__agent = Agent()   # init an agent
 
     """scale the coordinates by a factor
     """
-    def __scale(self, coordinates): 
+
+    def __scale(self, coordinates):
         return tuple([coordinate * self.__render_scale for coordinate in coordinates])
+
+    def detect_user_input(self):
+        # detect QUIT command from user inputs
+        for event in pygame.event.get():
+            # print(event.type)
+            if event.type == pygame.QUIT:   # if user directly close the game window
+                self.__isRun = False
+                break
+            elif event.type == pygame.KEYDOWN:  # if the user press Escape key
+                if (event.key == pygame.K_ESCAPE):
+                    self.__isRun = False
+                    break
+                elif (event.key == pygame.K_LEFT):
+                    self.move(Direction.LEFT)
+                elif (event.key == pygame.K_RIGHT):
+                    self.move(Direction.RIGHT)
+                elif (event.key == pygame.K_UP):
+                     self.move(Direction.UP)
+                elif (event.key == pygame.K_DOWN):
+                        self.move(Direction.DOWN)
 
     def move(self, direction):
         x = self.get_map().get_agent_coordinates()[0]
@@ -109,33 +131,11 @@ class Game:
     def run(self):
         # main loop
         self.__isRun = True
+       
         while self.__isRun:
-           
             clock.tick(60)    # set game frame rate. the bigger the number, the faster the frame refreshes
             self.render()    # render the game
-
-            # detect QUIT command from user inputs
-            for event in pygame.event.get():
-                # print(event.type)
-                if event.type == pygame.QUIT:   # if user directly close the game window
-                    self.__isRun = False
-                    break   
-                elif event.type == pygame.KEYDOWN:  # if the user press Escape key
-                    if (event.key == pygame.K_ESCAPE):
-                        self.__isRun = False
-                        break
-                    elif (event.key == pygame.K_LEFT):
-                        self.move(Direction.LEFT)
-                    # not(self.isOuterwall(self.player.getX()+SCALE, self.player.getY())):
-                    elif (event.key == pygame.K_RIGHT):
-                        self.move(Direction.RIGHT)
-                    # not(self.isOuterwall(self.player.getX() , self.player.getY()-SCALE)):
-                    elif (event.key == pygame.K_UP):
-                        self.move(Direction.UP)
-                    # not(self.isOuterwall(self.player.getX(), self.player.getY()+SCALE)):
-                    elif (event.key == pygame.K_DOWN):
-                        self.move(Direction.DOWN)
-
+            self.detect_user_input()    # detect user keyboard input & control the game
 
 
 # test and debug
